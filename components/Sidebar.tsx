@@ -46,7 +46,12 @@ export default function Sidebar() {
               }`}
             >
               <span className="material-symbols-outlined">{item.icon}</span>
-              {item.name}
+              <span className="flex-1">{item.name}</span>
+              {item.count && (
+                 <span className="bg-red-500 text-white text-[10px] px-2 py-1 rounded-md animate-pulse">
+                  {item.count} LIVE
+                </span>
+              )}
             </Link>
           );
         })}

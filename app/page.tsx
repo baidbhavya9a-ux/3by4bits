@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -9,37 +10,45 @@ export default function Home() {
         <section className="relative px-6 py-12 md:py-24 checker-bg">
           <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div className="z-10 text-center md:text-left">
+<<<<<<< HEAD
               <div className="inline-block px-4 py-1 bg-tertiary-container text-tertiary-fixed-variant font-headline font-black uppercase text-xs rounded-full mb-6 -rotate-2">
                 Season 01: The Collab Ascension
               </div>
               <h1 className="text-5xl md:text-7xl font-headline font-black uppercase tracking-tighter leading-[0.9] mb-8">
                 Assemble Your <span className="text-primary" style={{ fontFamily: "var(--font-montserrat)" }}>Dream Team.</span>
+=======
+              <div className="inline-block px-4 py-1 bg-primary/20 text-primary border border-primary/30 font-headline font-black uppercase text-xs rounded-full mb-6 -rotate-2 backdrop-blur-md">
+                Protocol 01: The Great Compile
+              </div>
+              <h1 className="text-5xl md:text-8xl font-headline font-black uppercase tracking-tighter leading-[0.85] mb-8">
+                ASSEMBLE YOUR <br/> <span className="text-primary italic">DREAM TEAM.</span>
+>>>>>>> 7ea482f2aef1956b0d644539f0380658e3769241
               </h1>
-              <p className="text-lg md:text-xl text-on-surface-variant max-w-lg mb-10 font-medium">
-                Ditch the solo queue. Join the elite arena where developers
-                clash, collaborate, and conquer massive technical milestones
-                together.
+              <p className="text-lg md:text-xl text-on-surface-variant max-w-lg mb-10 font-medium border-l-2 border-primary/40 pl-6">
+                Termination of solo queue imminent. Access the elite arena where developers
+                clash, sync, and dominate the digital landscape together.
               </p>
-              <a href="/setup" className="kinetic-3d-button px-10 py-5 bg-secondary text-white font-headline font-black text-2xl rounded-xl uppercase tracking-wider flex items-center gap-4 group mx-auto md:mx-0">
-                PLAY NOW
+              <a href="/setup" className="kinetic-3d-button !border-0 px-8 py-5 bg-secondary text-white font-headline font-black text-2xl rounded-xl uppercase tracking-wider inline-flex w-fit items-center gap-4 group mx-auto md:mx-0">
+                TEAM UP
                 <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">
                   sports_esports
                 </span>
               </a>
             </div>
-            <div className="relative">
-              <div className="hero-skew bg-primary rounded-xl overflow-hidden shadow-2xl rotate-3">
+            <div className="relative group">
+              <div className="relative rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(77,143,240,0.3)] border-2 border-primary/30">
                 <img
                   alt="Gamified developers"
-                  className="w-full h-full object-cover mix-blend-luminosity opacity-80"
+                  className="w-full h-full object-cover"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLun0w5gb--TPA5ET_Y8weUgjg_pZyo1NAR9URZ_2o59-Du5rkgVCg2Uocs6Uxe44A6JLaZRwXKlQZINIZwlWK7XQtCevExFD5Zt_oO9Zhlvf8vN7qfW_5QKoqLv0O_6Q5XZU-lJboX-uCHZCIxLPY-4ivMlQG5eax0pSW4wKsrWZiG5jQVvRwdha0efXfnFEOdeoJROg5b8gMFRcjTwY62hNVckjVw0p2ESI43wwRgc1hKwCKGSu6KnrEQ5VLtJ8zGdckkYaJrhY"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+                <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] bg-[length:100%_4px,3px_100%] animate-scan"></div>
               </div>
               {/* Floating Stat UI */}
-              <div className="absolute -bottom-6 -left-6 bg-surface-container-highest/90 backdrop-blur-md p-6 rounded-lg shadow-xl border-b-8 border-primary -rotate-4">
+              <div className="absolute -bottom-6 -left-6 bg-surface-container-high/90 backdrop-blur-xl p-6 rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-primary/30 animate-float -rotate-2">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white">
+                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center text-white shadow-glow-primary">
                     <span
                       className="material-symbols-outlined"
                       style={{ fontVariationSettings: "'FILL' 1" }}
@@ -62,7 +71,7 @@ export default function Home() {
         </section>
 
         {/* Choose Your Class */}
-        <section className="py-20 px-6 bg-surface-container-low">
+        <section className="py-24 px-6 bg-surface-container-low">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
               <div>
@@ -78,7 +87,8 @@ export default function Home() {
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               {/* Frontend */}
-              <div className="group bg-white p-8 rounded-lg shadow-[0_8px_0_0_#d9e2ff] hover:-translate-y-2 transition-all cursor-pointer relative overflow-hidden">
+              <div className="group p-8 rounded-2xl glass-card hover-tilt cursor-pointer relative overflow-hidden border border-primary/20">
+                <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-primary/40 rounded-tr-xl"></div>
                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                   <span className="material-symbols-outlined text-9xl">
                     html
@@ -106,7 +116,8 @@ export default function Home() {
                 </div>
               </div>
               {/* Backend */}
-              <div className="group bg-white p-8 rounded-lg shadow-[0_8px_0_0_#d9e2ff] hover:-translate-y-2 transition-all cursor-pointer relative overflow-hidden">
+              <div className="group p-8 rounded-2xl glass-card hover-tilt cursor-pointer relative overflow-hidden border border-secondary/20">
+                <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-secondary/40 rounded-tr-xl"></div>
                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                   <span className="material-symbols-outlined text-9xl">
                     database
@@ -134,7 +145,8 @@ export default function Home() {
                 </div>
               </div>
               {/* AI */}
-              <div className="group bg-white p-8 rounded-lg shadow-[0_8px_0_0_#d9e2ff] hover:-translate-y-2 transition-all cursor-pointer relative overflow-hidden border-4 border-tertiary">
+              <div className="group p-8 rounded-2xl glass-card hover-tilt cursor-pointer relative overflow-hidden border-2 border-tertiary/20">
+                <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-tertiary/40 rounded-tr-xl"></div>
                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                   <span className="material-symbols-outlined text-9xl">
                     neurology
@@ -165,107 +177,68 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Current Missions (Bento Grid) */}
+        {/* Live Arena Status & Team Hub */}
         <section className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-headline font-black uppercase tracking-tighter inline-block relative">
-                Current Missions
-                <span className="absolute -top-4 -right-8 bg-error text-white text-xs px-2 py-1 rounded italic animate-pulse">
-                  LIVE
-                </span>
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4">
-              {/* Big Mission */}
-              <div className="md:col-span-2 md:row-span-2 bg-inverse-surface rounded-xl p-8 relative overflow-hidden group">
-                <img
-                  alt="Cyberpunk Arena"
-                  className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvVkDYEJ6aX84scUi5hEO84aGZkA7c2YgSy5Bo_z3cu7vZ3jVjdzWWd92l8pJIFeiF31yKDRpLjhS8BLRGzQjXJu7i7iQSRDTDTEk95cXbQ_YXFVS1ojNQr7PUOEOvK99UUprzJ8Npsjg7NpY57Qs69YAwrZ6T7x7Pwcrm9kOI0RoErakmMX2p0t7CJEss_jq0QdiQp9DGgE_Xxwjrck6e83LRfvSPDb-gzxPhsYIvzDKL6KG0d9hoMsqUd49Hg3bDCNBGrxno68k"
-                />
-                <div className="relative z-10 h-full flex flex-col justify-end">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="bg-primary px-3 py-1 rounded text-white text-[10px] font-black uppercase">
-                      GLOBAL BOSS
-                    </span>
-                    <span className="text-primary-container font-headline font-bold">
-                      ENDS IN 12H
-                    </span>
+            <div className="flex flex-col md:flex-row gap-8 items-stretch">
+              
+              {/* Live Player Counter */}
+              <div className="flex-1 bg-surface-container-highest rounded-3xl p-10 relative overflow-hidden border-4 border-primary chunky-shadow-primary">
+                <div className="absolute top-6 right-6 flex items-center gap-2 bg-error/10 text-error px-4 py-2 rounded-full border-2 border-error animate-pulse">
+                  <span className="w-3 h-3 bg-error rounded-full block"></span>
+                  <span className="font-headline font-black uppercase text-xs">LIVE</span>
+                </div>
+                
+                <h2 className="text-xl font-headline font-black uppercase text-primary mb-2">Arena Status</h2>
+                <div className="flex items-baseline gap-4 mb-4">
+                  <span className="text-6xl md:text-8xl font-headline font-black tracking-tighter text-on-surface">12,482</span>
+                  <span className="text-2xl font-headline font-black uppercase text-on-surface-variant">Players Online</span>
+                </div>
+                <p className="text-on-surface-variant max-w-md font-medium text-lg leading-relaxed mb-6">
+                  The grid is buzzing. Developers from across the globe are forming teams and shipping code in real-time. Join the surge.
+                </p>
+                <div className="flex -space-x-4 mb-8">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div key={i} className="w-12 h-12 rounded-full border-4 border-white bg-surface-variant overflow-hidden">
+                      <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Active User" />
+                    </div>
+                  ))}
+                  <div className="w-12 h-12 rounded-full border-4 border-white bg-primary flex items-center justify-center text-white font-black text-sm">
+                    +2k
                   </div>
-                  <h3 className="text-3xl md:text-5xl font-headline font-black text-white uppercase tracking-tighter mb-4 leading-none">
-                    The Distributed Ledger Raid
-                  </h3>
-                  <p className="text-surface-variant mb-8 text-sm max-w-sm">
-                    Synchronize 1,000 nodes across 5 continents to unlock the
-                    'Genesis Block' trophy.
-                  </p>
-                  <button className="kinetic-3d-button self-start px-6 py-3 bg-white text-primary font-headline font-black uppercase text-sm rounded-lg">
-                    JOIN RAID
-                  </button>
                 </div>
               </div>
-              {/* Small Mission 1 */}
-              <div className="md:col-span-2 bg-secondary-container rounded-xl p-6 relative overflow-hidden">
-                <div className="flex justify-between items-start">
-                  <div className="relative z-10">
-                    <h4 className="text-2xl font-headline font-black text-white uppercase mb-2">
-                      CSS Speedrun
-                    </h4>
-                    <p className="text-on-secondary-container text-xs font-bold uppercase mb-4">
-                      Reward: +500 XP
-                    </p>
-                    <button className="px-4 py-2 bg-on-secondary-container text-white rounded text-[10px] font-black uppercase">
-                      ENTER QUALIFIERS
-                    </button>
+
+              {/* Team Hub / Messages Card */}
+              <div className="md:w-1/3 bg-secondary-container rounded-3xl p-10 flex flex-col justify-between relative overflow-hidden group border-4 border-secondary chunky-shadow-secondary">
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+                
+                <div className="relative z-10">
+                  <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-white mb-6 rotate-3 group-hover:rotate-12 transition-transform shadow-lg backdrop-blur-md">
+                    <span className="material-symbols-outlined text-4xl">forum</span>
                   </div>
-                  <span className="material-symbols-outlined text-white/20 text-7xl -rotate-12">
-                    bolt
-                  </span>
-                </div>
-              </div>
-              {/* Small Mission 2 */}
-              <div className="bg-surface-container-high rounded-xl p-6 flex flex-col justify-between">
-                <span
-                  className="material-symbols-outlined text-primary text-4xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  workspace_premium
-                </span>
-                <div>
-                  <h4 className="font-headline font-black uppercase text-primary leading-tight">
-                    Bug Bounty Blitz
-                  </h4>
-                  <p className="text-[10px] font-bold text-on-surface-variant uppercase mt-1">
-                    12 Slots Remaining
+                  <h3 className="text-3xl font-headline font-black text-white uppercase leading-none mb-4">Messages</h3>
+                  <p className="text-white/80 font-medium text-sm leading-relaxed mb-8">
+                    Your direct connection to your matched squads and pending mission invites.
                   </p>
                 </div>
+
+                <Link href="/messages" className="relative z-10 w-full kinetic-3d-button py-4 bg-white text-secondary font-headline font-black uppercase text-center rounded-xl tracking-widest shadow-[0_4px_0_0_#d9e2ff] group-hover:-translate-y-1 transition-all active:translate-y-1 active:shadow-none block">
+                  JOIN ROOM
+                </Link>
               </div>
-              {/* Small Mission 3 */}
-              <div className="bg-tertiary-container rounded-xl p-6 flex flex-col justify-between border-b-4 border-on-tertiary-container">
-                <span className="material-symbols-outlined text-on-tertiary-container text-4xl">
-                  event_note
-                </span>
-                <div>
-                  <h4 className="font-headline font-black uppercase text-on-tertiary-container leading-tight">
-                    AI Hack Night
-                  </h4>
-                  <p className="text-[10px] font-bold text-on-tertiary-container/70 uppercase mt-1">
-                    Starts Tomorrow
-                  </p>
-                </div>
-              </div>
+
             </div>
           </div>
         </section>
 
         {/* Join the Arena */}
-        <section className="py-24 px-6 checker-bg">
-          <div className="max-w-4xl mx-auto bg-surface-container-lowest p-8 md:p-16 rounded-xl shadow-[0_20px_60px_-15px_rgba(0,25,69,0.3)] relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-tertiary"></div>
+        <section className="py-24 px-6 relative">
+          <div className="max-w-4xl mx-auto bg-surface-container-high/30 backdrop-blur-2xl p-8 md:p-16 rounded-3xl border border-primary/20 shadow-[0_0_100px_rgba(0,0,0,0.8)] relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50"></div>
             <div className="text-center mb-12">
               <h2 className="text-4xl md:text-5xl font-headline font-black uppercase tracking-tighter mb-4">
-                Join the <span className="italic text-primary">Arena</span>
+                Join the <span className="text-primary">Arena</span>
               </h2>
               <p className="text-on-surface-variant font-medium">
                 Claim your handle and start your climb to legendary status.
@@ -278,7 +251,7 @@ export default function Home() {
                     Callsign (Username)
                   </label>
                   <input
-                    className="w-full bg-surface-container-low border-none rounded-lg p-4 focus:ring-4 focus:ring-primary/20 transition-all font-bold"
+                    className="w-full bg-surface-container-low border-2 border-primary/20 rounded-xl p-4 focus:border-primary transition-all font-bold outline-none text-foreground"
                     placeholder="Gamer_Dev_99"
                     type="text"
                   />
@@ -287,7 +260,7 @@ export default function Home() {
                   <label className="block font-headline font-black uppercase text-xs text-primary">
                     Specialization
                   </label>
-                  <select className="w-full bg-surface-container-low border-none rounded-lg p-4 focus:ring-4 focus:ring-primary/20 transition-all font-bold">
+                  <select className="w-full bg-surface-container-low border-2 border-primary/20 rounded-xl p-4 focus:border-primary transition-all font-bold outline-none text-foreground appearance-none">
                     <option>Frontend</option>
                     <option>Backend</option>
                     <option>AI/ML</option>
@@ -300,14 +273,14 @@ export default function Home() {
                   Email Link
                 </label>
                 <input
-                  className="w-full bg-surface-container-low border-none rounded-lg p-4 focus:ring-4 focus:ring-primary/20 transition-all font-bold"
+                  className="w-full bg-surface-container-low border-2 border-primary/20 rounded-xl p-4 focus:border-primary transition-all font-bold outline-none text-foreground"
                   placeholder="you@arena.com"
                   type="email"
                 />
               </div>
               <div className="pt-6">
                 <button
-                  className="kinetic-3d-button w-full py-5 bg-primary text-white font-headline font-black text-xl rounded-xl uppercase tracking-widest shadow-[0_6px_0_0_#001945]"
+                  className="kinetic-3d-button-dark w-full py-5 bg-primary text-white font-headline font-black text-xl rounded-xl uppercase tracking-widest"
                   type="submit"
                 >
                   INITIALIZE ACCOUNT
@@ -322,7 +295,7 @@ export default function Home() {
       </main>
 
       {/* BottomNavBar (Mobile Only) */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 h-20 bg-orange-500 z-[60] rounded-t-3xl border-t-4 border-orange-700 shadow-[0_-8px_20px_rgba(254,118,0,0.3)]">
+      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 h-20 bg-surface-container-highest/95 backdrop-blur-xl z-[60] rounded-t-3xl border-t border-primary/30 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
         <a
           className="flex flex-col items-center bg-white/20 rounded-full px-6 py-2 scale-110"
           href="#"
@@ -351,7 +324,10 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-on-surface py-12 px-6 text-white text-center pb-32 md:pb-12">
         <div className="max-w-7xl mx-auto">
-          <span className="text-3xl font-black italic font-headline tracking-tighter uppercase block mb-6">
+          <span 
+            className="text-3xl font-black italic font-headline tracking-tighter uppercase block mb-6"
+            style={{ fontFamily: "'Times New Roman', Times, serif" }}
+          >
             DevMatch Collab
           </span>
           <div className="flex justify-center gap-8 mb-8">

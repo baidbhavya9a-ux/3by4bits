@@ -30,7 +30,10 @@ export default function VictoryPage() {
               <span className="material-symbols-outlined">volume_up</span>
               SYNC ACHIEVED
             </div>
-            <h1 className="text-6xl md:text-8xl font-headline font-black text-primary uppercase tracking-tighter italic leading-none drop-shadow-sm">
+            <h1 
+              className="text-6xl md:text-8xl font-headline font-black text-primary uppercase tracking-tighter italic leading-none drop-shadow-sm"
+              style={{ fontFamily: "'Times New Roman', Times, serif" }}
+            >
               TEAM FORMED!
             </h1>
             <p className="text-xl font-medium text-on-surface-variant max-w-2xl mx-auto">
