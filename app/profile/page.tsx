@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
+import ProfileModal from "@/components/ProfileModal";
 import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
 
@@ -26,8 +26,10 @@ const USER_STATS = {
 };
 
 export default function ProfilePage() {
+   const { user } = useAuth();
    const [activeTab, setActiveTab] = useState("GALLERY");
    const [rotation, setRotation] = useState(0);
+   const [isModalOpen, setIsModalOpen] = useState(false);
 
    // Continuous 3D rotation for the character
    useEffect(() => {
@@ -75,11 +77,11 @@ export default function ProfilePage() {
                      style={{ rotateY: rotation }}
                      className="w-80 h-[500px] relative flex items-center justify-center"
                   >
-                     <img 
-                        src="https://api.dicebear.com/7.x/avataaars/svg?seed=Shiva" 
-                        className="w-full h-full object-contain pointer-events-none drop-shadow-[0_0_50px_rgba(245,158,11,0.3)]"
-                        alt="Hero"
-                     />
+                      <img 
+                         src={user?.photoURL || "https://api.dicebear.com/7.x/avataaars/svg?seed=Shiva"} 
+                         className="w-full h-full object-cover rounded-full pointer-events-none drop-shadow-[0_0_50px_rgba(245,158,11,0.3)]"
+                         alt="Hero"
+                      />
                      <div className="absolute bottom-0 w-full h-[100px] bg-gradient-to-t from-slate-950 to-transparent"></div>
                   </motion.div>
 
@@ -108,10 +110,10 @@ export default function ProfilePage() {
                         <div className="bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-white/10 rounded-2xl p-6 shadow-2xl relative">
                            <div className="absolute top-2 right-2 opacity-20"><span className="material-symbols-outlined text-6xl">verified</span></div>
                            <div className="flex gap-4">
-                              <div className="w-16 h-16 rounded-xl bg-white p-1 shadow-inner"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Nikhil" className="w-full h-full object-cover" /></div>
-                              <div>
-                                 <h2 className="text-2xl font-black italic tracking-tighter leading-none mb-1">Nikhil.2804</h2>
-                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">English • Elite Coder</p>
+                               <div className="w-16 h-16 rounded-xl bg-white p-1 shadow-inner"><img src={user?.photoURL || "https://api.dicebear.com/7.x/avataaars/svg?seed=Nikhil"} className="w-full h-full object-cover" /></div>
+                               <div>
+                                  <h2 className="text-2xl font-black italic tracking-tighter leading-none mb-1">{user?.displayName || "New Legend"}</h2>
+                                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">{user?.email || "Protocol Unlinked"} • Elite Coder</p>
                                  <div className="flex gap-4">
                                     <span className="flex items-center gap-1 text-[9px] font-black text-amber-500"><span className="material-symbols-outlined text-xs">calendar_today</span> 1 Year+</span>
                                     <span className="flex items-center gap-1 text-[9px] font-black text-blue-400"><span className="material-symbols-outlined text-xs">thumb_up</span> {USER_STATS.likeCount}</span>
@@ -214,7 +216,11 @@ export default function ProfilePage() {
             {/* OVERLAY BUTTONS (CAMERA/PHOTO STUFF) */}
             <div className="absolute right-4 bottom-24 flex flex-col gap-3 z-30">
                {['photo_camera', 'person', 'qr_code', 'share'].map((icon) => (
-                  <button key={icon} className="w-10 h-10 bg-black/60 border border-white/10 rounded-lg flex items-center justify-center group hover:bg-amber-500 transition-all">
+                   <button 
+                     key={icon} 
+                     onClick={() => icon === 'person' ? setIsModalOpen(true) : null}
+                     className="w-10 h-10 bg-black/60 border border-white/10 rounded-lg flex items-center justify-center group hover:bg-amber-500 transition-all"
+                   >
                      <span className="material-symbols-outlined text-white group-hover:text-black font-black">{icon}</span>
                   </button>
                ))}
@@ -222,6 +228,7 @@ export default function ProfilePage() {
             </div>
 
          </main>
+         <ProfileModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
          <MobileNav />
       </div>
    );

@@ -297,7 +297,7 @@ export default function Home() {
                     type="button"
                     onClick={async () => {
                       await loginWithGoogle();
-                      router.push('/setup');
+                      router.push('/victory');
                     }}
                     id="google-btn"
                     className="flex-1 py-4 bg-white text-slate-700 border-2 border-slate-200 font-headline font-black text-xs rounded-xl uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm active:translate-y-1 active:shadow-none"
@@ -314,7 +314,7 @@ export default function Home() {
                     type="button"
                     onClick={async () => {
                       await loginWithGithub();
-                      router.push('/setup');
+                      router.push('/victory');
                     }}
                     className="flex-1 py-4 bg-slate-800 text-white border-2 border-slate-700 font-headline font-black text-xs rounded-xl uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-slate-900 transition-all shadow-sm active:translate-y-1 active:shadow-none"
                   >

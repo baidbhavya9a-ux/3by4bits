@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import ProfileModal from "./ProfileModal";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -19,6 +20,7 @@ export default function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeStat, setActiveStat] = useState<"xp" | "medals" | null>(null);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   
   const statsRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -189,14 +191,16 @@ export default function Navbar() {
                     <p className="text-xs font-bold text-blue-700 truncate">{user.displayName || user.email}</p>
                   </div>
                   <div className="p-2">
-                    <Link 
-                      href="/profile" 
-                      onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition-colors group"
+                    <button 
+                      onClick={() => {
+                        setMenuOpen(false);
+                        setIsProfileModalOpen(true);
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition-colors group"
                     >
                       <span className="material-symbols-outlined text-lg group-hover:scale-110 transition-transform">person</span>
                       <span className="text-xs font-black uppercase tracking-tight">My Profile</span>
-                    </Link>
+                    </button>
                     <Link 
                       href="#" 
                       className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 transition-colors group"
@@ -236,6 +240,11 @@ export default function Navbar() {
         </div>
       </div>
       <div className="bg-slate-200 h-[4px] w-full absolute bottom-0 left-0"></div>
+      
+      <ProfileModal 
+        isOpen={isProfileModalOpen} 
+        onClose={() => setIsProfileModalOpen(false)} 
+      />
     </nav>
   );
 }

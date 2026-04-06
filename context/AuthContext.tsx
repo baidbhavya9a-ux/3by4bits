@@ -5,6 +5,7 @@ import {
   onAuthStateChanged, 
   signInWithPopup, 
   signOut, 
+  updateProfile,
   User 
 } from "firebase/auth";
 import { auth, googleProvider, githubProvider, isFirebaseConfigured } from "@/lib/firebase";
@@ -14,6 +15,7 @@ interface AuthContextType {
   loading: boolean;
   loginWithGoogle: () => Promise<void>;
   loginWithGithub: () => Promise<void>;
+  updateUserProfile: (displayName: string, photoURL: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -61,6 +63,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const updateUserProfile = async (displayName: string, photoURL: string) => {
+    if (isFirebaseConfigured && auth && auth.currentUser) {
+      try {
+        await updateProfile(auth.currentUser, { displayName, photoURL });
+        // Force refresh local user state
+        setUser({ ...auth.currentUser, displayName, photoURL });
+      } catch (error) {
+        console.error("Update Profile Error:", error);
+        throw error;
+      }
+    }
+  };
+
   const logout = async () => {
     if (isFirebaseConfigured && auth) {
       try {
@@ -74,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithGithub, logout }}>
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithGithub, updateUserProfile, logout }}>
       {children}
     </AuthContext.Provider>
   );
