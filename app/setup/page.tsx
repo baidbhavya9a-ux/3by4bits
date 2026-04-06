@@ -73,7 +73,7 @@ export default function SetupPage() {
               className="space-y-6"
               onSubmit={(e) => {
                 e.preventDefault();
-                router.push("/lobby");
+                router.push("/discovery");
               }}
             >
               <div className="grid md:grid-cols-2 gap-6">

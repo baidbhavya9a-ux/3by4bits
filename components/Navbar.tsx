@@ -9,7 +9,6 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Lobby", href: "/lobby" },
     { name: "Events", href: "/missions" },
     { name: "Team", href: "/discovery" },
     { name: "Messages", href: "/victory" },
@@ -28,7 +27,10 @@ export default function Navbar() {
           </button>
         )}
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl font-black text-blue-700 italic font-headline tracking-tighter uppercase">
+          <span 
+            className="text-2xl font-black text-blue-700 italic font-headline tracking-tighter uppercase"
+            style={{ fontFamily: "'Times New Roman', Times, serif" }}
+          >
             DevMatch Collab
           </span>
         </Link>

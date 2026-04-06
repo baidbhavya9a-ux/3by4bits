@@ -7,7 +7,6 @@ export default function MobileNav() {
   const pathname = usePathname();
 
   const navItems = [
-    { name: "Lobby", href: "/", icon: "sports_esports" },
     { name: "Events", href: "/missions", icon: "assignment" },
     { name: "Boost", href: "#", icon: "speed", special: true },
     { name: "Rewards", href: "#", icon: "workspace_premium" },
