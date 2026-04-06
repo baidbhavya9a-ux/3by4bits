@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -23,10 +23,12 @@ if (isFirebaseConfigured) {
   const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
   auth = getAuth(app);
   googleProvider = new GoogleAuthProvider();
+  githubProvider = new GithubAuthProvider();
 } else {
   console.warn("Firebase API Key missing. Switching to Mock Auth Mode for demonstration.");
   auth = null;
   googleProvider = null;
+  githubProvider = null;
 }
 
-export { auth, googleProvider, isFirebaseConfigured };
+export { auth, googleProvider, githubProvider, isFirebaseConfigured };

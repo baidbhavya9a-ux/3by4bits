@@ -7,12 +7,13 @@ import {
   signOut, 
   User 
 } from "firebase/auth";
-import { auth, googleProvider, isFirebaseConfigured } from "@/lib/firebase";
+import { auth, googleProvider, githubProvider, isFirebaseConfigured } from "@/lib/firebase";
 
 interface AuthContextType {
   user: any | null; // Use any to allow for our mock user object
   loading: boolean;
   loginWithGoogle: () => Promise<void>;
+  loginWithGithub: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -47,6 +48,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const loginWithGithub = async () => {
+    if (isFirebaseConfigured && auth) {
+      try {
+        await signInWithPopup(auth, githubProvider);
+      } catch (error) {
+        console.error("GitHub Auth Error:", error);
+        alert(`GitHub Auth Error: ${error instanceof Error ? error.message : "Unknown Error"}`);
+      }
+    } else {
+      alert("Firebase Configuration Missing! Please add your API keys to enable GitHub Sign-In.");
+    }
+  };
+
   const logout = async () => {
     if (isFirebaseConfigured && auth) {
       try {
@@ -60,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithGithub, logout }}>
       {children}
     </AuthContext.Provider>
   );
