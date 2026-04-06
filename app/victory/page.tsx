@@ -140,12 +140,11 @@ export default function VictoryPage() {
 
   return (
     <>
-
       <div className="flex pt-20 h-screen overflow-hidden">
         <Sidebar />
         <main className="flex-1 overflow-y-auto relative py-12 flex flex-col items-center justify-center overflow-hidden pb-32">
           {/* Workspace Content */}
-          <div className="w-full bg-white border-2 border-slate-100 rounded-[2.5rem] shadow-xl overflow-hidden min-h-[600px] flex flex-col">
+          <div className="w-full max-w-5xl bg-white border-2 border-slate-100 rounded-[2.5rem] shadow-xl overflow-hidden min-h-[600px] flex flex-col">
             {/* Tab Bar */}
             <div className="bg-slate-50 border-b-2 border-slate-100 p-2 flex gap-2">
               <button 
@@ -193,7 +192,6 @@ export default function VictoryPage() {
                   </div>
 
                   <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                    {/* Simplified Player Cards */}
                     <div className="bg-slate-50 p-6 rounded-3xl border-2 border-slate-100 w-64 text-center">
                       <div className="w-32 h-32 mx-auto mb-4 bg-blue-100 rounded-full border-4 border-white shadow-md overflow-hidden">
                         <img alt="Player 1" src="/skin-druid.png" className="w-full h-full object-cover" />
@@ -201,11 +199,9 @@ export default function VictoryPage() {
                       <h3 className="font-black uppercase text-slate-800">Pixel_Slayer</h3>
                       <p className="text-[10px] font-bold text-slate-500 uppercase">UI Druid</p>
                     </div>
-
                     <div className="bg-blue-700 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg">
                       <span className="material-symbols-outlined">bolt</span>
                     </div>
-
                     <div className="bg-slate-50 p-6 rounded-3xl border-2 border-slate-100 w-64 text-center">
                       <div className="w-32 h-32 mx-auto mb-4 bg-orange-100 rounded-full border-4 border-white shadow-md overflow-hidden">
                         <img alt="Player 2" src="/skin-ninja.png" className="w-full h-full object-cover" />
@@ -231,13 +227,43 @@ export default function VictoryPage() {
               {/* Chat Tab */}
               {activeView === "chat" && (
                 <div className="flex flex-col h-[600px] animate-in fade-in slide-in-from-right-4 duration-500">
-                  <div className="flex-1 p-6 overflow-y-auto space-y-4">
-                    {messages.map((msg) => (
-                      <div key={msg.id} className={`flex flex-col ${msg.sender === "You" ? "items-end" : "items-start"}`}>
-                        <div className={`max-w-[70%] p-4 rounded-3xl font-bold text-sm shadow-sm ${msg.sender === "You" ? "bg-blue-700 text-white rounded-br-none" : "bg-slate-100 text-slate-700 rounded-bl-none"}`}>
-                          {msg.text}
+                  <div className="p-4 border-b-2 border-slate-100 flex items-center justify-between bg-slate-50">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden bg-blue-100">
+                        <img src="/skin-druid.png" className="w-full h-full object-cover" alt="Avatar" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-black uppercase text-slate-800 leading-none">Pixel_Slayer</p>
+                        <div className="flex items-center gap-1 mt-1">
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Matched • Online</p>
                         </div>
-                        <span className="text-[9px] font-bold text-slate-400 mt-1 uppercase tracking-widest">{msg.sender} • {msg.time}</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                       <button className="w-10 h-10 rounded-xl bg-white border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:text-blue-700 transition-all">
+                         <span className="material-symbols-outlined text-lg">call</span>
+                       </button>
+                       <button className="w-10 h-10 rounded-xl bg-white border-2 border-slate-100 flex items-center justify-center text-slate-400 hover:text-blue-700 transition-all">
+                         <span className="material-symbols-outlined text-lg">video_call</span>
+                       </button>
+                    </div>
+                  </div>
+
+                  <div className="flex-1 p-6 overflow-y-auto space-y-6">
+                    {messages.map((msg) => (
+                      <div key={msg.id} className={`flex gap-3 ${msg.sender === "You" ? "flex-row-reverse" : "flex-row"}`}>
+                        {msg.sender !== "You" && (
+                          <div className="w-8 h-8 rounded-full border-2 border-slate-100 flex-shrink-0 overflow-hidden bg-slate-200">
+                            <img src="/skin-druid.png" className="w-full h-full object-cover" alt="Teammate" />
+                          </div>
+                        )}
+                        <div className={`flex flex-col ${msg.sender === "You" ? "items-end" : "items-start"}`}>
+                          <div className={`max-w-[85%] p-4 rounded-3xl font-bold text-sm shadow-sm transition-all hover:shadow-md ${msg.sender === "You" ? "bg-blue-700 text-white rounded-br-none" : "bg-slate-100 text-slate-700 rounded-bl-none"}`}>
+                            {msg.text}
+                          </div>
+                          <span className="text-[9px] font-bold text-slate-400 mt-2 uppercase tracking-widest">{msg.sender} • {msg.time}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -307,7 +333,6 @@ export default function VictoryPage() {
               )}
             </div>
           </div>
-
         </main>
       </div>
       <MobileNav />
