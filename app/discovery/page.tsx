@@ -1,48 +1,76 @@
-import Sidebar from "@/components/Sidebar";
-import MobileNav from "@/components/MobileNav";
+"use client";
+
+import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function DiscoveryPage() {
+  const [isScanning, setIsScanning] = useState(true);
+  const [requestSent, setRequestSent] = useState(false);
+
+  useEffect(() => {
+    // Artificial scanning delay to mimic radar
+    const timer = setTimeout(() => {
+      setIsScanning(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleRequestTeam = () => {
+    setRequestSent(true);
+    // Auto-dismiss or simulate navigation after 2 seconds
+    setTimeout(() => {
+      setRequestSent(false);
+    }, 2000);
+  };
+
   return (
-    <>
-      <div className="flex min-h-screen pt-20">
-        <Sidebar />
+    <main className="min-h-screen px-4 md:px-12 py-8 pt-28 pb-32 bg-surface">
+      <header className="mb-10 text-center md:text-left">
+        <h1 className="text-4xl md:text-5xl font-headline font-black uppercase text-on-surface italic tracking-tighter mb-2">
+          Select Your Partner
+        </h1>
+        <p className="font-body font-bold text-primary flex items-center justify-center md:justify-start gap-3">
+          <span className="material-symbols-outlined group-hover:animate-radar-scan">radar</span>
+          {isScanning ? "SCANNING FOR ELITE TALENT..." : "TALENT ACQUIRED. INITIALIZING SYNC."}
+        </p>
+      </header>
 
-        {/* Main Character Select Canvas */}
-        <main className="flex-1 px-4 md:px-12 py-8 pb-32">
-          <header className="mb-10 text-center md:text-left">
-            <h1 className="text-4xl md:text-5xl font-headline font-black uppercase text-on-surface italic tracking-tighter mb-2">
-              Select Your Partner
-            </h1>
-            <p className="font-body font-bold text-primary flex items-center justify-center md:justify-start gap-2">
-              <span className="material-symbols-outlined">radar</span>
-              SCANNING FOR ELITE TALENT...
-            </p>
-          </header>
-
-          <div className="max-w-4xl mx-auto relative">
-            {/* Swipe Indicators */}
-            <div className="absolute -left-16 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-2 opacity-30">
-              <span className="material-symbols-outlined text-4xl">
-                keyboard_double_arrow_left
-              </span>
-              <span className="font-headline font-black text-xs uppercase">
-                SKIP
+      <div className="max-w-4xl mx-auto relative min-h-[500px]">
+        {/* Scanning Overlay Animation */}
+        {isScanning && (
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center space-y-8 bg-surface/80 backdrop-blur-md rounded-2xl border-4 border-dashed border-primary/20">
+            <div className="relative w-64 h-64 flex items-center justify-center">
+              <div className="absolute inset-0 border-4 border-primary/30 rounded-full animate-radar-scan">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-32 bg-gradient-to-b from-primary to-transparent blur-sm transform origin-bottom"></div>
+              </div>
+              <span className="material-symbols-outlined text-8xl text-primary animate-pulse">
+                radar
               </span>
             </div>
-            <div className="absolute -right-16 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-2 opacity-30 text-primary">
-              <span className="material-symbols-outlined text-4xl">
-                keyboard_double_arrow_right
-              </span>
-              <span className="font-headline font-black text-xs uppercase">
-                SELECT
-              </span>
+            <div className="text-center">
+              <p className="text-2xl font-headline font-black uppercase italic animate-bounce text-primary">
+                Acquiring Targets...
+              </p>
+              <div className="flex gap-2 justify-center mt-2">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="w-2 h-2 bg-primary rounded-full animate-pulse"
+                    style={{ animationDelay: `${i * 0.2}s` }}
+                  ></div>
+                ))}
+              </div>
             </div>
+          </div>
+        )}
 
-            {/* Character Card */}
-            <div className="relative bg-surface-container-low rounded-xl overflow-hidden shadow-2xl border-b-[12px] border-primary tilted-left hover:rotate-0 transition-transform duration-500 group">
+        {/* Character Card Content */}
+        {!isScanning && (
+          <div className={`relative transition-all duration-1000 transform ${requestSent ? "scale-90 opacity-0 -translate-y-20 blur-xl" : "scale-100 opacity-100 translate-y-0"}`}>
+            <div className="relative bg-white rounded-xl overflow-hidden shadow-2xl border-b-[12px] border-primary tilted-left hover:rotate-0 transition-transform duration-500 group">
               <div className="flex flex-col lg:flex-row h-full min-h-[500px]">
                 {/* Character Portrait */}
-                <div className="w-full lg:w-1/2 relative bg-surface-container-highest overflow-hidden">
+                <div className="w-full lg:w-1/2 relative bg-surface-variant overflow-hidden">
                   <img
                     alt="Full stack developer candidate"
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
@@ -82,7 +110,7 @@ export default function DiscoveryPage() {
                     </div>
 
                     <div className="glass-panel p-6 rounded-lg mb-8 border-l-4 border-primary">
-                      <p className="text-on-surface-variant font-medium leading-relaxed">
+                      <p className="text-on-surface-variant font-medium leading-relaxed italic">
                         "Optimizing distributed systems like it's a speedrun. I
                         don't just write code; I orchestrate digital
                         symphonies. Looking for a duo to crush the upcoming
@@ -110,18 +138,18 @@ export default function DiscoveryPage() {
 
                   {/* Card Controls */}
                   <div className="mt-12 flex gap-4">
-                    <button className="flex-1 py-5 bg-surface-container-high text-on-surface-variant font-headline font-black rounded-xl border-b-4 border-slate-300 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-tighter">
+                    <button className="flex-1 py-5 bg-surface-container-high text-on-surface-variant font-headline font-black rounded-xl border-b-4 border-slate-300 opacity-40 uppercase tracking-tighter cursor-not-allowed">
                       SKIP
                     </button>
-                    <a
-                      href="/victory"
-                      className="flex-[2] py-5 bg-primary text-white font-headline font-black rounded-xl chunky-shadow-primary active-press uppercase tracking-tighter flex items-center justify-center gap-3 text-lg"
+                    <button
+                      onClick={handleRequestTeam}
+                      className="flex-[2] py-5 bg-primary text-white font-headline font-black rounded-xl chunky-shadow-primary active-press uppercase tracking-tighter flex items-center justify-center gap-3 text-lg group"
                     >
-                      <span className="material-symbols-outlined">
+                      <span className="material-symbols-outlined group-hover:rotate-12 transition-all">
                         person_add
                       </span>
                       REQUEST TEAM
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -131,68 +159,90 @@ export default function DiscoveryPage() {
             <div className="absolute -bottom-4 left-4 right-4 h-12 bg-surface-container-high -z-10 rounded-xl opacity-50 tilted-right"></div>
             <div className="absolute -bottom-8 left-8 right-8 h-12 bg-surface-container-highest -z-20 rounded-xl opacity-20"></div>
           </div>
+        )}
 
-          {/* Dashboard Mini-Stats */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-tertiary transform hover:-translate-y-2 transition-transform">
-              <div className="flex items-center gap-4">
-                <span
-                  className="material-symbols-outlined text-tertiary text-4xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  workspace_premium
-                </span>
-                <div>
-                  <div className="text-xs font-headline font-black text-slate-400 uppercase">
-                    Season Rank
-                  </div>
-                  <div className="text-2xl font-headline font-black">
-                    Diamond Tier
-                  </div>
-                </div>
-              </div>
+        {/* Request Sent Toast/Overlay */}
+        {requestSent && (
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-primary/95 text-white rounded-2xl p-12 transition-all duration-300 animate-in zoom-in-50">
+            <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mb-8 shadow-2xl">
+              <span className="material-symbols-outlined text-7xl text-primary animate-bounce">
+                how_to_reg
+              </span>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-secondary transform hover:-translate-y-2 transition-transform">
-              <div className="flex items-center gap-4">
-                <span
-                  className="material-symbols-outlined text-secondary text-4xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  speed
-                </span>
-                <div>
-                  <div className="text-xs font-headline font-black text-slate-400 uppercase">
-                    Daily Boost
-                  </div>
-                  <div className="text-2xl font-headline font-black">
-                    2.5x XP Active
-                  </div>
-                </div>
-              </div>
+            <h2 className="text-5xl font-headline font-black uppercase text-center italic tracking-tighter mb-4">
+              COMMAND RECEIVED
+            </h2>
+            <p className="text-xl font-body font-bold text-center uppercase tracking-widest opacity-80">
+              Your request has been dispatched to Alex.
+            </p>
+            <div className="mt-12">
+              <Link href="/victory" className="bg-white text-primary px-8 py-4 rounded-xl font-headline font-black uppercase transition-all hover:scale-105 active:scale-95 inline-block">
+                View Match Status
+              </Link>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-primary transform hover:-translate-y-2 transition-transform">
-              <div className="flex items-center gap-4">
-                <span
-                  className="material-symbols-outlined text-primary text-4xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  group
-                </span>
-                <div>
-                  <div className="text-xs font-headline font-black text-slate-400 uppercase">
-                    Squad Invites
-                  </div>
-                  <div className="text-2xl font-headline font-black">
-                    12 Requests
-                  </div>
+          </div>
+        )}
+      </div>
+
+      {/* Dashboard Mini-Stats */}
+      {!isScanning && (
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 opacity-0 animate-in fade-in slide-in-from-bottom-5 duration-700 fill-mode-forwards">
+          <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-tertiary transform hover:-translate-y-2 transition-transform">
+            <div className="flex items-center gap-4">
+              <span
+                className="material-symbols-outlined text-tertiary text-4xl"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                workspace_premium
+              </span>
+              <div>
+                <div className="text-xs font-headline font-black text-slate-400 uppercase">
+                  Season Rank
+                </div>
+                <div className="text-2xl font-headline font-black">
+                  Explorer I
                 </div>
               </div>
             </div>
           </div>
-        </main>
-      </div>
-
-      <MobileNav />
-    </>
+          <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-secondary transform hover:-translate-y-2 transition-transform">
+            <div className="flex items-center gap-4">
+              <span
+                className="material-symbols-outlined text-secondary text-4xl"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                speed
+              </span>
+              <div>
+                <div className="text-xs font-headline font-black text-slate-400 uppercase">
+                  Daily Boost
+                </div>
+                <div className="text-2xl font-headline font-black">
+                  2.5x XP Active
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-primary transform hover:-translate-y-2 transition-transform">
+            <div className="flex items-center gap-4">
+              <span
+                className="material-symbols-outlined text-primary text-4xl"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                group
+              </span>
+              <div>
+                <div className="text-xs font-headline font-black text-slate-400 uppercase">
+                  Squad Finding
+                </div>
+                <div className="text-2xl font-headline font-black">
+                  ONLINE
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </main>
   );
 }
