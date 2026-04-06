@@ -8,7 +8,7 @@ export default function MobileNav() {
 
   const navItems = [
     { name: "Lobby", href: "/", icon: "sports_esports" },
-    { name: "Events", href: "/missions", icon: "assignment" },
+    { name: "Events", href: "/missions", icon: "assignment", count: 18 },
     { name: "Boost", href: "#", icon: "speed", special: true },
     { name: "Rewards", href: "#", icon: "workspace_premium" },
   ];
@@ -32,10 +32,15 @@ export default function MobileNav() {
           <Link
             key={item.name}
             href={item.href}
-            className={`flex flex-col items-center font-headline font-black uppercase text-[10px] hover:brightness-110 active:translate-y-1 transition-all ${
+            className={`flex flex-col items-center font-headline font-black uppercase text-[10px] hover:brightness-110 active:translate-y-1 transition-all relative ${
                 isActive ? "text-white" : "text-orange-100"
             }`}
           >
+            {item.count && (
+              <span className="absolute -top-1 -right-4 bg-white text-orange-600 text-[8px] px-1.5 py-0.5 rounded-full animate-bounce shadow-lg">
+                {item.count}
+              </span>
+            )}
             <span className="material-symbols-outlined">{item.icon}</span>
             <span>{item.name}</span>
           </Link>
