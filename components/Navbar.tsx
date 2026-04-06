@@ -28,7 +28,6 @@ export default function Navbar() {
         )}
         <Link href="/" className="flex items-center gap-2">
           <span 
-<<<<<<< HEAD
             className="text-3xl text-blue-700 tracking-tighter uppercase flex items-center"
             style={{ 
               fontFamily: "'Montserrat', sans-serif",
@@ -37,12 +36,6 @@ export default function Navbar() {
           >
             <span>DEVMATCH</span>
             <span className="italic ml-2">COLLAB</span>
-=======
-            className="text-2xl font-black text-blue-700 italic font-headline tracking-tighter uppercase"
-            style={{ fontFamily: "'Times New Roman', Times, serif" }}
-          >
-            DevMatch Collab
->>>>>>> 7ea482f2aef1956b0d644539f0380658e3769241
           </span>
         </Link>
       </div>
