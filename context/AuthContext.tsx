@@ -7,10 +7,10 @@ import {
   signOut, 
   User 
 } from "firebase/auth";
-import { auth, googleProvider } from "@/lib/firebase";
+import { auth, googleProvider, isFirebaseConfigured } from "@/lib/firebase";
 
 interface AuthContextType {
-  user: User | null;
+  user: any | null; // Use any to allow for our mock user object
   loading: boolean;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
@@ -19,30 +19,53 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    if (isFirebaseConfigured && auth) {
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+        setLoading(false);
+      });
+      return () => unsubscribe();
+    } else {
       setLoading(false);
-    });
-    return () => unsubscribe();
+    }
   }, []);
 
   const loginWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
-      console.error("Authentication Error:", error);
+    if (isFirebaseConfigured && auth) {
+      try {
+        await signInWithPopup(auth, googleProvider);
+      } catch (error) {
+        console.error("Authentication Error:", error);
+      }
+    } else {
+      // Mock Login
+      console.log("Mock Login Triggered");
+      setLoading(true);
+      setTimeout(() => {
+        setUser({
+          displayName: "Elite Coder",
+          email: "demo@devmatch.io",
+          photoURL: "/prof-avatar.png",
+          uid: "mock-user-123"
+        });
+        setLoading(false);
+      }, 1000);
     }
   };
 
   const logout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Logout Error:", error);
+    if (isFirebaseConfigured && auth) {
+      try {
+        await signOut(auth);
+      } catch (error) {
+        console.error("Logout Error:", error);
+      }
+    } else {
+      setUser(null);
     }
   };
 

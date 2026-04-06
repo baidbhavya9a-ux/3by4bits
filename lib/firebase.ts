@@ -10,9 +10,20 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-// Initialize Firebase
-const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+// Check if config is valid
+const isFirebaseConfigured = !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined";
 
-export { auth, googleProvider };
+let auth: any;
+let googleProvider: any;
+
+if (isFirebaseConfigured) {
+  const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  googleProvider = new GoogleAuthProvider();
+} else {
+  console.warn("Firebase API Key missing. Switching to Mock Auth Mode for demonstration.");
+  auth = null;
+  googleProvider = null;
+}
+
+export { auth, googleProvider, isFirebaseConfigured };
