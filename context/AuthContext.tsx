@@ -40,20 +40,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await signInWithPopup(auth, googleProvider);
       } catch (error) {
         console.error("Authentication Error:", error);
+        alert(`Authentication Error: ${error instanceof Error ? error.message : "Unknown Error"}`);
       }
     } else {
-      // Mock Login
-      console.log("Mock Login Triggered");
-      setLoading(true);
-      setTimeout(() => {
-        setUser({
-          displayName: "Elite Coder",
-          email: "demo@devmatch.io",
-          photoURL: "/prof-avatar.png",
-          uid: "mock-user-123"
-        });
-        setLoading(false);
-      }, 1000);
+      alert("Firebase Configuration Missing! Please add your API keys to the .env.local file to enable ACTUAL Google Sign-In.");
     }
   };
 
