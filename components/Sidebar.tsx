@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Sidebar() {
+  const { user } = useAuth();
   const pathname = usePathname();
 
   const navItems = [
@@ -19,8 +21,8 @@ export default function Sidebar() {
         <div className="flex items-center gap-3 transition-transform group-hover:scale-105 group-hover:translate-x-1">
           <img
             alt="Player Profile"
-            className="w-12 h-12 rounded-xl bg-blue-600 shadow-lg border-2 border-white"
-            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Shiva"
+            className="w-12 h-12 rounded-xl bg-blue-600 shadow-lg border-2 border-white object-cover"
+            src={user?.photoURL || "https://api.dicebear.com/7.x/avataaars/svg?seed=Shiva"}
           />
           <div>
             <p className="font-headline font-black text-xl text-blue-700 leading-none group-hover:text-blue-600">

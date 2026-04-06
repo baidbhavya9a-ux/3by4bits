@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
+import { useAuth } from "@/context/AuthContext";
 
-// Current User Profile (PIXEL_SLAYER)
+// Current User Profile (Fallback)
 const USER_PROFILE = {
   name: "PIXEL_SLAYER",
   role: "UI DRUID",
@@ -129,6 +130,7 @@ const CU_PARTNERS = [
 ];
 
 export default function DiscoveryPage() {
+  const { user } = useAuth();
   const router = useRouter();
   const [partners, setPartners] = useState<any[]>([]);
   const [analyzing, setAnalyzing] = useState(false);
@@ -155,8 +157,17 @@ export default function DiscoveryPage() {
     setShowClash(true);
     setTimeout(() => setClashStage(1), 1000);  
     setTimeout(() => setClashStage(2), 2400); 
+  };
+
+  const handleInfiltration = () => {
     const generatedRoomId = "WAR-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-    setTimeout(() => router.push(`/room/${generatedRoomId}`), 4800);
+    router.push(`/room/${generatedRoomId}`);
+  };
+
+  const handleAbort = () => {
+    setShowClash(false);
+    setClashStage(0);
+    setSelectedPartner(null);
   };
 
   return (
@@ -218,17 +229,16 @@ export default function DiscoveryPage() {
           ))}
         </div>
 
-        {/* STRATEGIC AUDIT USP MODAL */}
+        {/* USP AUDIT MODAL */}
         {showDetail && (
            <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-slate-950/60 backdrop-blur-md animate-in fade-in duration-300">
-              <div className="bg-white rounded-4xl w-full max-w-2xl overflow-hidden shadow-[32px_32px_0_0_rgba(255,255,255,0.1)] border-4 border-slate-800 animate-in zoom-in-95">
+              <div className="bg-white rounded-4xl w-full max-w-2xl overflow-hidden shadow-[32px_32px_0_0_rgba(255,255,255,0.1)] border-4 border-slate-800 animate-in zoom-in-95 font-sans">
                  <div className="relative h-40 bg-slate-900 flex items-end p-8 overflow-hidden">
                     <button onClick={() => setShowDetail(null)} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"><span className="material-symbols-outlined font-black">close</span></button>
                     <div className="absolute top-6 left-6 bg-blue-600 text-white text-[8px] font-black px-3 py-1 rounded-lg animate-pulse">DEVMATCH VERIFIED AUDIT</div>
-                    <div className="relative z-10 flex items-center gap-6"><div className="w-20 h-20 rounded-2xl bg-white border-4 border-blue-600 shadow-2xl overflow-hidden"><img src={showDetail.image} className="w-full h-full object-cover shadow-inner" /></div><div><h2 className="text-3xl font-headline font-black text-white uppercase italic leading-none tracking-tighter">{showDetail.name}</h2><p className="text-blue-400 font-black text-xs uppercase tracking-widest mt-2">{showDetail.role}</p></div></div>
+                    <div className="relative z-10 flex items-center gap-6"><div className="w-20 h-20 rounded-2xl bg-white border-4 border-blue-600 shadow-2xl overflow-hidden shadow-inner"><img src={showDetail.image} className="w-full h-full object-cover" /></div><div><h2 className="text-3xl font-headline font-black text-white uppercase italic leading-none tracking-tighter" style={{ fontFamily: "'Montserrat', sans-serif" }}>{showDetail.name}</h2><p className="text-blue-400 font-black text-xs uppercase tracking-widest mt-2">{showDetail.role}</p></div></div>
                  </div>
                  <div className="p-8">
-                    {/* The History Module - OUR USP */}
                     <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-6 mb-8 flex items-center justify-between shadow-inner">
                        <div className="text-center">
                           <p className="text-3xl font-headline font-black text-slate-900 leading-none">{showDetail.syncScore}%</p>
@@ -253,41 +263,35 @@ export default function DiscoveryPage() {
 
                     <div className="grid grid-cols-2 gap-8 mb-8">
                        <div className="space-y-4">
-                          <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Synergy Rationale (Why him?)</h4>
+                          <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Synergy Rationale</h4>
                           <div className="space-y-2">
                              <div className="flex gap-2 text-[10px] font-bold text-slate-700 italic">
                                 <span className="material-symbols-outlined text-blue-600 text-xs font-black">verified</span>
-                                Zero Role Overlap with PIXEL_SLAYER.
+                                Zero Role Overlap with {user?.displayName || "PIXEL_SLAYER"}.
                              </div>
                              <div className="flex gap-2 text-[10px] font-bold text-slate-700 italic">
                                 <span className="material-symbols-outlined text-blue-600 text-xs font-black">verified</span>
                                 Consistent GitHub Deployment Record.
                              </div>
-                             <div className="flex gap-2 text-[10px] font-bold text-slate-700 italic">
-                                <span className="material-symbols-outlined text-blue-600 text-xs font-black">verified</span>
-                                Victory consistency in University events.
-                             </div>
                           </div>
                        </div>
                        <div>
-                          <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Peer Battle Reviews</h4>
+                          <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Recent Commits</h4>
                           <div className="space-y-2">
-                             {showDetail.reviews?.map((review: string, i: number) => (
-                                <div key={i} className="bg-slate-50 border-l-2 border-blue-500 p-2 text-[9px] font-bold text-slate-600 italic leading-tight">
-                                   "{review}"
-                                </div>
+                             {showDetail.reviews?.slice(0, 2).map((review: string, i: number) => (
+                                <div key={i} className="bg-slate-50 border-l-2 border-blue-500 p-2 text-[9px] font-bold text-slate-600 italic leading-tight">"{review}"</div>
                              ))}
                           </div>
                        </div>
                     </div>
 
-                    <button onClick={() => handleRequestTeam(showDetail)} className="w-full py-4 bg-blue-700 text-white rounded-2xl font-headline font-black uppercase text-xs shadow-[0_4px_0_0_#1e3a8a] active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2 italic">START MISSION WITH {showDetail.name.split(' ')[0]}</button>
+                    <button onClick={() => handleRequestTeam(showDetail)} className="w-full py-4 bg-blue-700 text-white rounded-2xl font-headline font-black uppercase text-xs shadow-[0_4px_0_0_#1e3a8a] active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2 italic" style={{ fontFamily: "'Montserrat', sans-serif" }}>START MISSION WITH {showDetail.name.split(' ')[0]}</button>
                  </div>
               </div>
            </div>
         )}
 
-        {/* 3D SQUAD CLASH */}
+        {/* CLASH ANIMATION WITH COMMAND CONSENT */}
         {showClash && selectedPartner && (
            <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-50/95 backdrop-blur-xl overflow-hidden animate-in fade-in duration-700 font-headline italic uppercase tracking-tighter">
               <div className="absolute inset-0 z-0">
@@ -297,32 +301,56 @@ export default function DiscoveryPage() {
               <div className="relative z-10 w-full max-w-5xl px-6 flex flex-col items-center">
                  <div className={`mb-12 text-center transition-all duration-700 ${clashStage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-12'}`}>
                     <span className="bg-blue-600 text-white text-[10px] font-black uppercase px-6 py-2 rounded-full shadow-[0_4px_0_0_#1e3a8a] animate-pulse italic">SYNC_ESTABLISHED</span>
-                    <h2 className="text-6xl md:text-9xl font-headline font-black text-slate-900 mt-6 leading-none tracking-tighter drop-shadow-2xl">TEAM FORMED!</h2>
+                    <h2 className="text-6xl md:text-9xl font-headline font-black text-slate-900 mt-6 leading-none tracking-tighter drop-shadow-2xl" style={{ fontFamily: "'Montserrat', sans-serif" }}>TEAM FORMED!</h2>
                  </div>
                  <div className="w-full flex items-center justify-center gap-4 md:gap-16 relative h-[400px]">
                     <div className={`transition-all duration-[1000ms] ease-out-back ${clashStage >= 1 ? 'translate-x-0 opacity-100 scale-100' : '-translate-x-[200%] opacity-0 scale-50'}`}>
-                       <div className="bg-white border-2 border-slate-200 rounded-4xl p-10 shadow-[20px_20px_0_0_#eff6ff] perspective-1000 rotate-y-12 relative">
-                          <div className="absolute -top-4 -left-4 bg-blue-600 text-white text-[8px] font-black px-3 py-1 rounded-lg">OPERATIVE {USER_PROFILE.name}</div>
-                          <div className="w-48 h-48 rounded-3xl bg-slate-100 border-2 border-slate-200 overflow-hidden mb-8 relative shadow-inner"><img src={USER_PROFILE.image} className="w-full h-full object-cover" alt="User" /></div>
-                          <div className="text-center"><h4 className="text-3xl font-black text-slate-800">{USER_PROFILE.name}</h4><p className="text-[10px] font-black text-blue-600 tracking-widest mt-2">{USER_PROFILE.role}</p></div>
+                       <div className="bg-white border-4 border-black rounded-4xl p-10 shadow-[20px_20px_0_0_#000] perspective-1000 rotate-y-12 relative overflow-hidden">
+                          <div className="absolute -top-4 -left-4 bg-blue-600 text-white text-[8px] font-black px-3 py-1 border-2 border-black rounded-lg">OPERATIVE {(user?.displayName || USER_PROFILE.name).toUpperCase()}</div>
+                          <div className="w-48 h-48 rounded-3xl bg-slate-100 border-4 border-black overflow-hidden mb-8 relative shadow-inner"><img src={user?.photoURL || USER_PROFILE.image} className="w-full h-full object-cover" /></div>
+                          <div className="text-center">
+                            <h4 className="text-3xl font-black text-slate-800 tracking-tighter italic" style={{ fontFamily: "'Montserrat', sans-serif" }}>{user?.displayName || USER_PROFILE.name}</h4>
+                            <p className="text-[10px] font-black text-blue-600 tracking-widest mt-2">{user?.email ? "SYSTEM ARCHITECT" : "UI DRUID"}</p>
+                          </div>
                        </div>
                     </div>
                     <div className={`relative z-20 flex items-center justify-center w-32 md:w-48 transition-all duration-500 ${clashStage === 2 ? 'scale-150 rotate-[360deg]' : 'scale-100'}`}>
-                       <div className={`w-20 h-20 md:w-28 md:h-28 rounded-full bg-blue-700 text-white flex items-center justify-center shadow-[0_12px_24px_rgba(37,99,235,0.4)] border-4 border-white ${clashStage === 2 ? 'animate-ping' : ''}`}><span className="material-symbols-outlined text-4xl md:text-6xl font-black italic">sync_alt</span></div>
+                       <div className={`w-20 h-20 md:w-28 md:h-28 rounded-full bg-blue-700 text-white flex items-center justify-center shadow-[0_12px_24px_rgba(37,99,235,0.4)] border-4 border-black ${clashStage === 2 ? 'animate-ping' : ''}`}><span className="material-symbols-outlined text-4xl md:text-6xl font-black italic">sync_alt</span></div>
                     </div>
                     <div className={`transition-all duration-[1000ms] ease-out-back ${clashStage >= 1 ? 'translate-x-0 opacity-100 scale-100' : '-translate-x-[200%] opacity-0 scale-50'}`}>
-                       <div className="bg-white border-2 border-slate-200 rounded-4xl p-10 shadow-[20px_20px_0_0_#fff7ed] perspective-1000 -rotate-y-12 relative">
-                          <div className="absolute -top-4 -right-4 bg-orange-600 text-white text-[8px] font-black px-3 py-1 rounded-lg">OPERATIVE {selectedPartner.name.split(' ')[0].toUpperCase()}</div>
-                          <div className="w-48 h-48 rounded-3xl bg-slate-100 border-2 border-slate-200 overflow-hidden mb-8 relative shadow-inner"><img src={selectedPartner.image} className="w-full h-full object-cover" alt="Partner" /></div>
-                          <div className="text-center"><h4 className="text-3xl font-black text-slate-800">{selectedPartner.name}</h4><p className="text-[10px] font-black text-orange-600 tracking-widest mt-2">{selectedPartner.role}</p></div>
+                       <div className="bg-white border-4 border-black rounded-4xl p-10 shadow-[20px_20px_0_0_#000] perspective-1000 -rotate-y-12 relative">
+                          <div className="absolute -top-4 -right-4 bg-orange-600 text-white text-[8px] font-black px-3 py-1 border-2 border-black rounded-lg">OPERATIVE {selectedPartner.name.split(' ')[0].toUpperCase()}</div>
+                          <div className="w-48 h-48 rounded-3xl bg-slate-100 border-4 border-black overflow-hidden mb-8 relative shadow-inner"><img src={selectedPartner.image} className="w-full h-full object-cover" alt="Partner" /></div>
+                          <div className="text-center"><h4 className="text-3xl font-black text-slate-800 tracking-tighter italic" style={{ fontFamily: "'Montserrat', sans-serif" }}>{selectedPartner.name}</h4><p className="text-[10px] font-black text-orange-600 tracking-widest mt-2">{selectedPartner.role}</p></div>
                        </div>
                     </div>
                  </div>
-                 <div className={`mt-16 transition-all duration-700 delay-500 flex flex-col items-center gap-6 ${clashStage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+                 <div className={`mt-16 transition-all duration-700 delay-500 flex flex-col items-center gap-8 ${clashStage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
                     <div className="flex items-center gap-4 px-8 py-3 bg-white border-2 border-blue-600/20 rounded-2xl shadow-[0_8px_16px_rgba(37,99,235,0.1)] animate-in slide-in-from-bottom-4">
-                       <span className="text-[12px] font-black text-blue-700 uppercase tracking-[0.2em] italic leading-none">OPERATIVE PIXEL_SLAYER JOINED THE ROOM</span>
+                       <span className="text-[12px] font-black text-blue-700 uppercase tracking-[0.2em] italic leading-none">OPERATIVE {(user?.displayName || USER_PROFILE.name).toUpperCase()} JOINED THE ROOM</span>
                     </div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.6em] text-center italic">Finalizing Infiltration Protocol...</p>
+
+                    {/* COMMAND DECISION MODULE */}
+                    <div className={`flex items-center gap-6 transition-all duration-1000 ${clashStage === 2 ? 'scale-100 opacity-100' : 'scale-50 opacity-0 pointer-events-none'}`}>
+                        <button 
+                           onClick={handleInfiltration}
+                           className="px-10 py-5 bg-blue-700 text-white border-2 border-slate-950 rounded-2xl shadow-[8px_8px_0_0_#000] font-headline font-black uppercase text-sm tracking-widest italic hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-3"
+                        >
+                           <span className="material-symbols-outlined font-black">verified</span>
+                           ESTABLISH LINK
+                        </button>
+                        <button 
+                           onClick={handleAbort}
+                           className="px-10 py-5 bg-white text-red-600 border-2 border-slate-950 rounded-2xl shadow-[8px_8px_0_0_#000] font-headline font-black uppercase text-sm tracking-widest italic hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-3"
+                        >
+                           <span className="material-symbols-outlined font-black">cancel</span>
+                           ABORT PROTOCOL
+                        </button>
+                    </div>
+
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.6em] text-center italic mt-2">
+                       {clashStage === 2 ? "Awaiting Command Confirmation..." : "Finalizing Infiltration Protocol..."}
+                    </p>
                  </div>
               </div>
            </div>
@@ -335,6 +363,9 @@ export default function DiscoveryPage() {
          .perspective-1000 { perspective: 1000px; }
          .rotate-y-12 { transform: rotateY(12deg); }
          .-rotate-y-12 { transform: rotateY(-12deg); }
+         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
       `}</style>
     </div>
   );

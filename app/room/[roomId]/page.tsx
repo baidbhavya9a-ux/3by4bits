@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 
 export default function WarRoomPage() {
+  const router = useRouter();
   const params = useParams();
   const roomId = params.roomId as string;
   
@@ -34,6 +35,7 @@ function infiltrate(target) {
 const missionResult = infiltrate("GLOBAL_CORE_01");`);
   const [output, setOutput] = useState<string[]>(["[SYSTEM] Arsenal Initialized. Ready for command..."]);
   const [executing, setExecuting] = useState(false);
+  const [showAbortModal, setShowAbortModal] = useState(false);
 
   // Initialize Canvas
   useEffect(() => {
@@ -101,6 +103,10 @@ const missionResult = infiltrate("GLOBAL_CORE_01");`);
       setOutput(prev => [...prev, `[EXECUTING] node tactical_script.js`, `[LOG] Mission payload delivered successfully.`, `[SUCCESS] Protocol complete.`]);
       setExecuting(false);
     }, 1500);
+  };
+
+  const handleAbortSession = () => {
+    router.push("/discovery");
   };
 
   return (
@@ -191,29 +197,36 @@ const missionResult = infiltrate("GLOBAL_CORE_01");`);
                 </span>
              </div>
              
-             <div className="flex items-center gap-4">
-                {activeModule === 'whiteboard' ? (
-                   <>
-                      <div className="flex gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100 shadow-inner">
-                         {['#2563eb', '#ef4444', '#1e293b'].map(color => (
-                           <button key={color} onClick={() => setBrushColor(color)} className={`w-7 h-7 rounded-lg transition-all ${brushColor === color ? 'scale-110 ring-2 ring-blue-500 shadow-lg' : 'opacity-40 hover:opacity-100'}`} style={{ backgroundColor: color }} />
-                         ))}
-                      </div>
-                      <button onClick={clearCanvas} className="bg-white text-red-600 border-2 border-red-100 px-5 py-2.5 rounded-xl font-black text-[10px] hover:bg-red-50 hover:border-red-500 active:translate-y-0.5 transition-all uppercase tracking-widest shadow-sm">
-                         Clear Surface
-                      </button>
-                   </>
-                ) : (
-                   <button 
-                     onClick={runCode}
-                     disabled={executing}
-                     className={`bg-green-600 text-white border-b-4 border-green-800 px-8 py-3 rounded-xl font-black text-[10px] transition-all uppercase tracking-widest flex items-center gap-3 hover:brightness-110 active:translate-y-1 active:border-b-0 shadow-lg ${executing ? 'animate-pulse opacity-50' : ''}`}
-                   >
-                     <span className="material-symbols-outlined text-sm font-black">{executing ? 'sync' : 'play_arrow'}</span>
-                     {executing ? 'Executing Commands...' : 'Execute Protocol'}
-                   </button>
-                )}
-             </div>
+                 <div className="flex items-center gap-4">
+                    <button 
+                       onClick={() => setShowAbortModal(true)}
+                       className="bg-white text-red-600 border-2 border-slate-950 px-5 py-2.5 rounded-xl font-black text-[10px] hover:bg-red-50 active:translate-y-1 active:shadow-none transition-all uppercase tracking-widest shadow-[4px_4px_0_0_#000] flex items-center gap-2"
+                    >
+                       <span className="material-symbols-outlined text-sm font-black">logout</span>
+                       TERMINATE SESSION
+                    </button>
+                    {activeModule === 'whiteboard' ? (
+                       <>
+                          <div className="flex gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100 shadow-inner">
+                             {['#2563eb', '#ef4444', '#1e293b'].map(color => (
+                               <button key={color} onClick={() => setBrushColor(color)} className={`w-7 h-7 rounded-lg transition-all ${brushColor === color ? 'scale-110 ring-2 ring-blue-500 shadow-lg' : 'opacity-40 hover:opacity-100'}`} style={{ backgroundColor: color }} />
+                             ))}
+                          </div>
+                          <button onClick={clearCanvas} className="bg-white text-slate-400 border-2 border-slate-100 px-5 py-2.5 rounded-xl font-black text-[10px] hover:bg-slate-50 hover:border-slate-300 active:translate-y-0.5 transition-all uppercase tracking-widest shadow-sm">
+                             Clear Surface
+                          </button>
+                       </>
+                    ) : (
+                       <button 
+                         onClick={runCode}
+                         disabled={executing}
+                         className={`bg-green-600 text-white border-2 border-slate-950 px-8 py-3 rounded-xl font-black text-[10px] transition-all uppercase tracking-widest flex items-center gap-3 hover:brightness-110 active:translate-y-1 active:shadow-none shadow-[4px_4px_0_0_#000] ${executing ? 'animate-pulse opacity-50' : ''}`}
+                       >
+                         <span className="material-symbols-outlined text-sm font-black">{executing ? 'sync' : 'play_arrow'}</span>
+                         {executing ? 'Executing Commands...' : 'Execute Protocol'}
+                       </button>
+                    )}
+                 </div>
           </div>
 
           <div className="flex-1 w-full relative overflow-hidden bg-white">
@@ -259,6 +272,34 @@ const missionResult = infiltrate("GLOBAL_CORE_01");`);
           </div>
         </div>
       </main>
+      {/* ABORT MISSION CONFIRMATION MODAL */}
+      {showAbortModal && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-slate-950/60 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="bg-white rounded-4xl w-full max-w-sm overflow-hidden shadow-[20px_20px_0_0_#000] border-4 border-slate-800 animate-in zoom-in-95 font-sans p-10 text-center space-y-8">
+             <div className="w-20 h-20 bg-red-50 rounded-full border-4 border-red-600 flex items-center justify-center mx-auto shadow-lg animate-pulse">
+                <span className="material-symbols-outlined text-red-600 text-4xl font-black italic">logout</span>
+             </div>
+             <div className="space-y-3">
+                <h2 className="text-3xl font-headline font-black text-slate-900 uppercase italic leading-none tracking-tighter" style={{ fontFamily: "'Montserrat', sans-serif" }}>Abort Protocol?</h2>
+                <p className="text-slate-500 font-bold text-xs uppercase leading-tight tracking-widest px-4 italic">Confirm termination of this collaborative link. All tactical data will be purged.</p>
+             </div>
+             <div className="flex flex-col gap-4">
+                <button 
+                  onClick={handleAbortSession}
+                  className="w-full py-4 bg-red-600 text-white border-2 border-slate-900 rounded-2xl shadow-[6px_6px_0_0_#000] font-headline font-black uppercase text-xs tracking-[0.2em] italic hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+                >
+                  Confirm: Abort Mission
+                </button>
+                <button 
+                  onClick={() => setShowAbortModal(false)}
+                  className="w-full py-4 bg-white text-slate-400 border-2 border-slate-200 rounded-2xl font-headline font-black uppercase text-[10px] tracking-widest italic hover:bg-slate-50 transition-all"
+                >
+                  Cancel: Return to Comms
+                </button>
+             </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
