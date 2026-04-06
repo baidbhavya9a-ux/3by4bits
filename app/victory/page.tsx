@@ -33,6 +33,8 @@ export default function VictoryPage() {
     ctx.lineWidth = 3;
     ctx.lineCap = "round";
     setIsDrawing(true);
+    (canvas as any)._lastX = x;
+    (canvas as any)._lastY = y;
   };
 
   const draw = (e: React.MouseEvent | React.TouchEvent) => {
@@ -46,8 +48,18 @@ export default function VictoryPage() {
     const x = ("touches" in e) ? e.touches[0].clientX - rect.left : (e as React.MouseEvent).clientX - rect.left;
     const y = ("touches" in e) ? e.touches[0].clientY - rect.top : (e as React.MouseEvent).clientY - rect.top;
 
+    const prevX = (canvas as any)._lastX || x;
+    const prevY = (canvas as any)._lastY || y;
+
+    ctx.beginPath();
+    ctx.moveTo(prevX, prevY);
     ctx.lineTo(x, y);
+    ctx.strokeStyle = brushColor;
     ctx.stroke();
+
+    broadcastDraw(prevX, prevY, x, y, brushColor);
+    (canvas as any)._lastX = x;
+    (canvas as any)._lastY = y;
   };
 
   const stopDrawing = () => {
@@ -59,13 +71,71 @@ export default function VictoryPage() {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    broadcastClear();
   };
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
-    setMessages([...messages, { id: Date.now(), sender: "You", text: newMessage, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
+    const msg = { id: Date.now(), sender: "You", text: newMessage, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
+    setMessages([...messages, msg]);
     setNewMessage("");
+    
+    // Broadcast message
+    if (typeof window !== 'undefined') {
+      const channel = new BroadcastChannel('devmatch_workspace');
+      channel.postMessage({ type: 'CHAT_MSG', payload: { ...msg, sender: 'Teammate' } });
+      channel.close();
+    }
+  };
+
+  // Real-time Sync Listeners
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const channel = new BroadcastChannel('devmatch_workspace');
+    
+    channel.onmessage = (event) => {
+      const { type, payload } = event.data;
+      if (type === 'CHAT_MSG') {
+        setMessages(prev => [...prev, payload]);
+      } else if (type === 'DRAW') {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+        
+        ctx.beginPath();
+        ctx.strokeStyle = payload.color;
+        ctx.lineWidth = 3;
+        ctx.lineCap = "round";
+        ctx.moveTo(payload.x1, payload.y1);
+        ctx.lineTo(payload.x2, payload.y2);
+        ctx.stroke();
+      } else if (type === 'CLEAR') {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    };
+
+    return () => channel.close();
+  }, [canvasRef]);
+
+  const broadcastDraw = (x1: number, y1: number, x2: number, y2: number, color: string) => {
+    if (typeof window !== 'undefined') {
+      const channel = new BroadcastChannel('devmatch_workspace');
+      channel.postMessage({ type: 'DRAW', payload: { x1, y1, x2, y2, color } });
+      channel.close();
+    }
+  };
+
+  const broadcastClear = () => {
+    if (typeof window !== 'undefined') {
+      const channel = new BroadcastChannel('devmatch_workspace');
+      channel.postMessage({ type: 'CLEAR' });
+      channel.close();
+    }
   };
 
   return (
@@ -143,6 +213,17 @@ export default function VictoryPage() {
                       <h3 className="font-black uppercase text-slate-800">Node_Ninja</h3>
                       <p className="text-[10px] font-bold text-slate-500 uppercase">Node Ninja</p>
                     </div>
+                  </div>
+
+                  <div className="flex justify-center gap-4">
+                    <button className="bg-slate-800 text-white px-8 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-slate-700 transition-all shadow-md flex items-center gap-2">
+                      <span className="material-symbols-outlined text-sm">radar</span>
+                      Search for New Team
+                    </button>
+                    <button className="bg-white text-slate-400 px-8 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest border-2 border-slate-100 hover:border-slate-300 transition-all flex items-center gap-2">
+                      <span className="material-symbols-outlined text-sm">logout</span>
+                      Disband Squad
+                    </button>
                   </div>
                 </div>
               )}
@@ -227,23 +308,6 @@ export default function VictoryPage() {
             </div>
           </div>
 
-        <div className="fixed bottom-12 right-24 z-50">
-          <div className="bg-tertiary-container p-4 rounded-xl transform -rotate-6 chunky-shadow-secondary border-4 border-tertiary max-w-[200px]">
-            <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined text-on-tertiary-container">
-                tips_and_updates
-              </span>
-              <div>
-                <p className="text-[10px] font-headline font-black uppercase text-on-tertiary-container leading-tight">
-                  Pro Tip
-                </p>
-                <p className="text-xs font-medium text-on-tertiary-container">
-                  Matches with 95%+ sync often complete missions 2x faster!
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
         </main>
       </div>
       <MobileNav />
