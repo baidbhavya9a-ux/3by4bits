@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -17,6 +17,23 @@ export default function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeStat, setActiveStat] = useState<"xp" | "medals" | null>(null);
+  
+  const statsRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (statsRef.current && !statsRef.current.contains(event.target as Node)) {
+        setActiveStat(null);
+      }
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-slate-50 flex justify-between items-center px-6 py-4 shadow-[0_4px_0_0_#0c53bc]">
@@ -61,7 +78,7 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center gap-6">
-        <div className="relative">
+        <div className="relative" ref={statsRef}>
           <div className="hidden sm:flex items-center gap-1 bg-slate-900/5 border border-slate-200 rounded-2xl backdrop-blur-sm overflow-hidden">
             <button 
               onClick={() => setActiveStat(activeStat === "medals" ? null : "medals")}
@@ -140,7 +157,7 @@ export default function Navbar() {
           )}
         </div>
         
-        <div className="relative">
+        <div className="relative" ref={profileRef}>
           <button 
             onClick={() => setMenuOpen(!menuOpen)}
             className="relative group block focus:outline-none"
