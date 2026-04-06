@@ -2,8 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const { user, loginWithGoogle } = useAuth();
+  const router = useRouter();
+
+  // If user is already logged in, we can optionally redirect or just let them stay
   return (
     <>
 
@@ -288,10 +294,9 @@ export default function Home() {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    const btn = document.getElementById('google-btn');
-                    if (btn) btn.innerHTML = 'AUTHENTICATING...';
-                    setTimeout(() => window.location.href = '/setup', 1200);
+                  onClick={async () => {
+                    await loginWithGoogle();
+                    router.push('/setup');
                   }}
                   id="google-btn"
                   className="w-full py-4 bg-white text-slate-700 border-2 border-slate-200 font-headline font-black text-lg rounded-xl uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm active:translate-y-1 active:shadow-none"

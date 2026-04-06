@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
 
 const avatars = [
   { src: "/prof-avatar.png", name: "Elite Coder" },
@@ -12,8 +14,18 @@ const avatars = [
 
 export default function SetupPage() {
   const [selectedAvatar, setSelectedAvatar] = useState(0);
+  const { user, loginWithGoogle } = useAuth();
   const [username, setUsername] = useState("Elite_Coder_99");
   const router = useRouter();
+
+  // Sync username with Google profile name if available
+  useEffect(() => {
+    if (user && user.displayName) {
+      // Create a slugified username from display name
+      const suggested = user.displayName.split(' ')[0] + '_' + Math.floor(Math.random() * 100);
+      setUsername(suggested);
+    }
+  }, [user]);
 
   return (
     <main className="min-h-screen pt-32 pb-12 flex items-center justify-center checker-bg bg-slate-50">
@@ -147,10 +159,11 @@ export default function SetupPage() {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    const btn = document.getElementById('google-btn-setup');
-                    if (btn) btn.innerHTML = 'SYNCING PROFILE...';
-                    setTimeout(() => router.push('/victory'), 1200);
+                  onClick={async () => {
+                    if (!user) {
+                      await loginWithGoogle();
+                    }
+                    router.push('/victory');
                   }}
                   id="google-btn-setup"
                   className="w-full py-4 bg-white text-slate-700 border-2 border-slate-100 font-black text-xs rounded-2xl uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-50 hover:border-slate-200 transition-all shadow-sm active:translate-y-1 active:shadow-none"
