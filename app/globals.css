@@ -17,6 +17,7 @@
   --color-surface-container-low: #f2f3ff;
   --color-surface-container-high: #e1e7ff;
   --color-surface-container-highest: #d9e2ff;
+  --color-surface-container-lowest: #ffffff;
   --color-on-surface-variant: #424653;
   --color-inverse-surface: #002d6e;
   --color-error: #ba1a1a;
@@ -25,7 +26,7 @@
   --color-on-tertiary-fixed-variant: #544600;
   --color-surface-variant: #d9e2ff;
 
-  --font-headline: var(--font-plus-jakarta);
+  --font-headline: var(--font-montserrat);
   --font-body: var(--font-be-vietnam);
   --font-label: var(--font-plus-jakarta);
 
@@ -35,35 +36,64 @@
 }
 
 :root {
-  --background: #faf8ff;
+  --background: #ffffff;
   --foreground: #001945;
 }
 
 @layer base {
   body {
     background: var(--background);
+    background-image: 
+      linear-gradient(
+        45deg,
+        rgba(0, 25, 69, 0.03) 25%,
+        transparent 25%
+      ),
+      linear-gradient(-45deg, rgba(0, 25, 69, 0.03) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(0, 25, 69, 0.03) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(0, 25, 69, 0.03) 75%);
+    background-size: 40px 40px;
+    background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
     color: var(--foreground);
     @apply font-body;
   }
 }
 
+@keyframes digital-drift {
+  0% { background-position: 0% 0%, 0% 0%, 0 0, 0 20px, 20px -20px, -20px 0px; }
+  100% { background-position: 20% 20%, -20% -20%, 0 0, 0 20px, 20px -20px, -20px 0px; }
+}
+
 @layer utilities {
   .checker-bg {
-    background-image: linear-gradient(
-        45deg,
-        rgba(12, 83, 188, 0.05) 25%,
-        transparent 25%
-      ),
-      linear-gradient(-45deg, rgba(12, 83, 188, 0.05) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, rgba(12, 83, 188, 0.05) 75%),
-      linear-gradient(-45deg, transparent 75%, rgba(12, 83, 188, 0.05) 75%);
-    background-size: 40px 40px;
-    background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+    /* Globally applied to body now */
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(12, 83, 188, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  }
+
+  .hover-tilt:hover {
+    transform: perspective(1000px) rotateX(4deg) rotateY(4deg) scale(1.03);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    border-color: rgba(77, 143, 240, 0.5);
+  }
+
+  .shadow-glow-primary {
+    box-shadow: 0 0 30px rgba(77, 143, 240, 0.3);
+  }
+
+  .shadow-glow-secondary {
+    box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
   }
 
   .kinetic-3d-button {
     transition: transform 0.1s, box-shadow 0.1s;
     box-shadow: 0 6px 0 0 #5a2600;
+    border: 3px solid #001945;
   }
 
   .kinetic-3d-button:active {
@@ -71,28 +101,27 @@
     box-shadow: 0 2px 0 0 #5a2600;
   }
 
-  .hero-skew {
-    transform: skewY(-2deg);
+  .kinetic-3d-button-dark {
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-shadow: 0 8px 0 0 #000d1a, 0 15px 25px -5px rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(0, 0, 0, 0.8);
   }
 
-  .hero-skew > * {
-    transform: skewY(2deg);
+  .kinetic-3d-button-dark:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 0 #000d1a;
   }
 
-  .material-symbols-outlined {
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  .chunky-border {
+    border: 1px solid rgba(77, 143, 240, 0.3);
   }
 
-  .chunky-shadow {
-    box-shadow: 0 4px 0 0 #001945;
+  .glow-primary {
+    box-shadow: 0 0 20px rgba(12, 83, 188, 0.2);
   }
 
-  .chunky-shadow-primary {
-    box-shadow: 0 6px 0 0 #002d6e;
-  }
-
-  .chunky-shadow-secondary {
-    box-shadow: 0 6px 0 0 #5a2600;
+  .glow-secondary {
+    box-shadow: 0 0 20px rgba(155, 69, 0, 0.2);
   }
 
   .glass-panel {
