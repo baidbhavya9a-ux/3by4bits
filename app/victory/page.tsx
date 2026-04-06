@@ -11,6 +11,8 @@ export default function VictoryPage() {
     { id: 2, sender: "You", text: "Absolutely. Let's start with the architecture.", time: "10:25 AM" },
   ]);
   const [newMessage, setNewMessage] = useState("");
+  const [isMatching, setIsMatching] = useState(false);
+  const [boostActive, setBoostActive] = useState(false);
   
   // Whiteboard State
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -136,6 +138,20 @@ export default function VictoryPage() {
       channel.postMessage({ type: 'CLEAR' });
       channel.close();
     }
+  };
+
+  const triggerNewMatch = () => {
+    setIsMatching(true);
+    setTimeout(() => {
+      setIsMatching(false);
+    }, 2500);
+  };
+
+  const triggerBoost = () => {
+    setBoostActive(true);
+    setTimeout(() => {
+      setBoostActive(false);
+    }, 3000);
   };
 
   return (
