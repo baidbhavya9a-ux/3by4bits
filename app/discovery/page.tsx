@@ -2,305 +2,340 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
 
-const MOCK_PARTNERS = [
+// Current User Profile (PIXEL_SLAYER)
+const USER_PROFILE = {
+  name: "PIXEL_SLAYER",
+  role: "UI DRUID",
+  skills: ["React", "Framer", "CSS", "UI/UX"],
+  aura: "blue",
+  image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Shiva"
+};
+
+const GLOBAL_PARTNERS = [
   {
     name: "Arjun Mehta",
     role: "System Architect",
     lvl: 42,
-    sync: 98,
-    quote: "Optimizing distributed systems like it's a speedrun. I don't just write code; I orchestrate digital symphonies.",
+    stars: 4.9,
+    reliability: "BATTLE TESTED",
+    quote: "Optimizing distributed systems like it's a speedrun.",
     skills: ["Rust Expert", "Kubernetes", "Web3 Guru"],
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDhgENMeVVr5iVmQaKNsCwxvuTc9VhkDWg_HimHg-PXaeviLlME7gPjXqzAnQPsVRFGeurnK05S8GhRoe47a2fFPncA5LcVENhJ1LoTPZRAo_axV6vM89B3uiPaITVszKcFc0fQv2kH0iu59eotMrsbxZhyfANn3mm5iH0U1y4Q649vEvqIn5m1ZzoDoV3j5KO7ff3smYxUmOx8MmK2anHeB2LqGIi_WJYsgwpZ0ncF4snu4FSNRvzwqsWn8_EwCb1BRFKopTRwr4E",
-    icon: "terminal",
-    color: "primary"
+    image: "https://i.pravatar.cc/300?img=14",
+    stats: { won: 12, attended: 45, projects: 88, commits: 2540 },
+    reviews: ["Architect of our SIH Finals win.", "Cleanest code in the arena.", "Absolute machine on Rust."]
   },
   {
     name: "Priya Sharma",
     role: "UI/UX Specialist",
     lvl: 24,
-    sync: 85,
-    quote: "Design is not what it looks like, it's how it works. I specialize in high-conversion, pixel-perfect interfaces.",
+    stars: 4.7,
+    reliability: "RISING STAR",
+    quote: "Design is not what it looks like, it's how it works.",
     skills: ["Figma Pro", "Next.js", "Tailwind"],
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDmKDmmxob1zdeYcAfi9y_hOW93VR1xJs9_J192dscBqWoeV3X0fl-RTJA9HbimHaOeOfrdsUtOgngymSPjmZ-i3_r1yf5FvXXF-UDiwzi7F3gEymOwQ8tF6WcJ3v9Kac-mvrBV51Wft4WdIlg7QcomLUlTRGCyzoHTnHHO-sVL_Lf_lje1YVqDK21Ys8QI8oKjPCEs-GU6wKLRMTAOUcmTH483ekq0QPkYiVf4lOCESMZ7uFYT6Fpc7tf89sQ0MyzEHGgqN4qsx2s",
-    icon: "palette",
-    color: "secondary"
+    image: "https://i.pravatar.cc/300?img=26",
+    stats: { won: 4, attended: 15, projects: 22, commits: 940 },
+    reviews: ["Pixels that actually make sense.", "Fastest designer in the North Node.", "Perfect flow mastery."]
   },
   {
-    name: "Ananya Iyer",
-    role: "AI Alchemist",
-    lvl: 31,
-    sync: 89,
-    quote: "Data is the new oil, and I'm the refinement plant. Let's build models that change how we interact with the web.",
-    skills: ["PyTorch", "NLP", "FastAPI"],
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCLun0w5gb--TPA5ET_Y8weUgjg_pZyo1NAR9URZ_2o59-Du5rkgVCg2Uocs6Uxe44A6JLaZRwXKlQZINIZwlWK7XQtCevExFD5Zt_oO9Zhlvf8vN7qfW_5QKoqLv0O_6Q5XZU-lJboX-uCHZCIxLPY-4ivMlQG5eax0pSW4wKsrWZiG5jQVvRwdha0efXfnFEOdeoJROg5b8gMFRcjTwY62hNVckjVw0p2ESI43wwRgc1hKwCKGSu6KnrEQ5VLtJ8zGdckkYaJrhY",
-    icon: "psychology",
-    color: "tertiary"
+    name: "Varun Kapoor",
+    role: "Cybersecurity Analyst",
+    lvl: 37,
+    stars: 4.8,
+    reliability: "ELITE PACKET SNIFFER",
+    quote: "Securing data packets before the leak starts.",
+    skills: ["Pentesting", "Wireshark", "Go"],
+    image: "https://i.pravatar.cc/300?img=18",
+    stats: { won: 8, attended: 28, projects: 41, commits: 1240 },
+    reviews: ["Secured our entire infrastructure in 20min.", "Legendary packet analysis.", "Zero vulnerabilities found."]
   },
   {
-    name: "Ishaan Malhotra",
-    role: "Fullstack Wizard",
-    lvl: 65,
-    sync: 96,
-    quote: "Why choose between the front and back when you can master the entire stack? I build unicorns for breakfast.",
-    skills: ["T3 Stack", "Postgres", "Deno"],
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBwUsC7kdWgTLlBCLZLz43DWwwXm-iblHD5YFfMwiQWArwhBhiLhb3JojrkyhAsGeZO9Ml1xUPyS_IiFmLE_fwV3OPwuaiooD9bv-BkQ-9TOLIzL6f2V2ENQ13QHrwvgkwn565f7c0pbBhFKF6CT5EraAW6u_SF3oxV1SCxURu0qosEoDNCIMrLJ6XXetEEALtBi9OYtrA8hlB0SsmLyMFleOqUrbBh5XK9ZuO6XMqPo9ex9iI59xAOkPYBZEdakDffa43LhT8j1Qs",
-    icon: "auto_fix_high",
-    color: "primary"
+    name: "Siddharth Roy",
+    role: "Security Architect",
+    lvl: 45,
+    stars: 4.9,
+    reliability: "LEGENDARY",
+    quote: "Infiltrating nodes before they even spawn.",
+    skills: ["Ethical Hacking", "Metasploit", "Python"],
+    image: "https://i.pravatar.cc/300?img=13",
+    stats: { won: 14, attended: 40, projects: 62, commits: 2100 },
+    reviews: ["Infil mastery like no other.", "Architect of our defense layer.", "Top 1% Global Node."]
   },
   {
-    name: "Kaveri Das",
+    name: "Ishita Malik",
     role: "Cloud Titan",
-    lvl: 44,
-    sync: 91,
-    quote: "Uptime is my religion. I scale infrastructures until they're bulletproof and lightning fast.",
+    lvl: 51,
+    stars: 4.9,
+    reliability: "BATTLE TESTED",
+    quote: "Building uptime that survives any storm.",
     skills: ["AWS", "Terraform", "Docker"],
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBPhKRUhZs1dQrde4WNC2c3lTaBauJv7tfXjZgCghtmKhcxJ1mAXgVjcGVNkCDq1Bm9M-l38ycrjU6RWwk4PJhV1NhAVV25fhC8ZnpmfL2XcKmpRkN7TkeJ2rL99hn6HS4RaK5n-0wB5PMLTDMa_4IIyFQvTQvkr1jVQiEUIFYlzhuS7wDVuYqdPDQN8Skhxzg1JIAlyXRVQWV-0WFflN7PRWap0kS_azxcNfVPxJSmc7nUL2J0UJrYokjUIHASzFPIUIkA1s3B6WM",
-    icon: "cloud",
-    color: "secondary"
+    image: "https://i.pravatar.cc/300?img=32",
+    stats: { won: 15, attended: 52, projects: 104, commits: 3840 },
+    reviews: ["99.9% availability during peak traffic.", "Cloud wizardry.", "Built our entire pipeline."]
+  }
+];
+
+const CU_PARTNERS = [
+  {
+    name: "Gaurav Guragain",
+    role: "Frontend Architect",
+    lvl: 38,
+    stars: 4.8,
+    reliability: "CU ELITE",
+    quote: "Scaling UIs with zero friction. Ready to dominate.",
+    skills: ["React", "Framer", "Typescript"],
+    image: "https://i.pravatar.cc/300?img=60",
+    stats: { won: 9, attended: 31, projects: 48, commits: 1450 },
+    reviews: ["Animation king of CU.", "Typescript legend.", "Flawless UI execution."]
   },
   {
-    name: "Siddharth Gupta",
-    role: "Security Engineer",
-    lvl: 59,
-    sync: 94,
-    quote: "If it's on the web, it's vulnerable. I build fortresses and find the leaks before the bad actors do.",
-    skills: ["Ethical Hacking", "Go", "Solidity"],
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDV5poWqg2MIQT_-c6_TTMGEs08S_PB5yU_Lk5K2vcZJl8ZJl606kWW6dEIra4lg-MElex22WZUDmHJ4DiS3EpgX6Ms834kJgrf3VcRV9SWG5jMuXgNywyxZ8DCOQrUYproivU2-SXVBn54NBk-HArsw-j8mGXzuX92STkPqgUAie3rUuZ7ghO-GFcOYlirnP7cU0HFDKlaI4nq9Ymztn8_eelrEsTBEUAXtAOwFoikufC505cE29UAGPyrWIYGoE8UqXhQEALUsoM",
-    icon: "shield_person",
-    color: "tertiary"
+    name: "Prachi Rajput",
+    role: "Fullstack Ninja",
+    lvl: 29,
+    stars: 4.9,
+    reliability: "BATTLE TESTED",
+    quote: "Backends that don't break.",
+    skills: ["Next.js", "Postgres", "AWS"],
+    image: "https://i.pravatar.cc/300?img=41",
+    stats: { won: 11, attended: 24, projects: 33, commits: 1280 },
+    reviews: ["Carried our group in the hackathon.", "End-to-end expertise.", "Absolute beast on Auth logic."]
+  },
+  {
+    name: "Deepanshu Kumar",
+    role: "DevOps Titan",
+    lvl: 52,
+    stars: 5.0,
+    reliability: "CU LEGEND",
+    quote: "Infrastructure as code is my mantra. Scaling dreams.",
+    skills: ["Docker", "Kubernetes", "Azure"],
+    image: "https://i.pravatar.cc/300?img=7",
+    stats: { won: 18, attended: 60, projects: 112, commits: 4520 },
+    reviews: ["Scaling master.", "K8s expertise at 100%.", "Unstoppable DevOps engine."]
+  },
+  {
+    name: "Arpit Sharma",
+    role: "Backend Wizard",
+    lvl: 45,
+    stars: 4.8,
+    reliability: "SQUAD LEADER",
+    skills: ["Node.js", "Express", "MongoDB"],
+    image: "https://i.pravatar.cc/300?img=68",
+    stats: { won: 14, attended: 38, projects: 65, commits: 2140 },
+    reviews: ["Backend lord of our node.", "Secure APIs for 10k users.", "The ultimate leader."]
   }
 ];
 
 export default function DiscoveryPage() {
-  const [currentUserIdx, setCurrentUserIdx] = useState(0);
-  const [requestSent, setRequestSent] = useState(false);
+  const router = useRouter();
+  const [partners, setPartners] = useState<any[]>([]);
   const [analyzing, setAnalyzing] = useState(false);
+  const [cuFilter, setCuFilter] = useState(false);
+  
+  // Transition States
+  const [selectedPartner, setSelectedPartner] = useState<any>(null);
+  const [showDetail, setShowDetail] = useState<any>(null);
+  const [showClash, setShowClash] = useState(false);
+  const [clashStage, setClashStage] = useState(0); 
 
-  const currentUser = MOCK_PARTNERS[currentUserIdx];
-
-  const handleNext = () => {
+  useEffect(() => {
     setAnalyzing(true);
     setTimeout(() => {
-      setCurrentUserIdx((prev) => (prev + 1) % MOCK_PARTNERS.length);
+      const data = cuFilter ? CU_PARTNERS : GLOBAL_PARTNERS;
+      setPartners(data.map(p => ({ ...p, syncScore: 85 + Math.floor(Math.random() * 15) })));
       setAnalyzing(false);
-    }, 800);
-  };
+    }, 600);
+  }, [cuFilter]);
 
-  const handleRequestTeam = () => {
-    setRequestSent(true);
-    setTimeout(() => {
-      setRequestSent(false);
-    }, 2500);
+  const handleRequestTeam = (partner: any) => {
+    setShowDetail(null);
+    setSelectedPartner(partner);
+    setShowClash(true);
+    setTimeout(() => setClashStage(1), 1000);  
+    setTimeout(() => setClashStage(2), 2400); 
+    const generatedRoomId = "WAR-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+    setTimeout(() => router.push(`/room/${generatedRoomId}`), 4800);
   };
 
   return (
-    <div className="flex pt-20 h-screen overflow-hidden bg-surface">
+    <div className="flex pt-20 h-screen overflow-hidden bg-slate-50">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto px-4 md:px-12 py-8 pb-32">
-        <header className="mb-10 text-center md:text-left animate-in fade-in slide-in-from-top-4 duration-500">
-          <h1 className="text-4xl md:text-5xl font-headline font-black uppercase text-on-surface italic tracking-tighter mb-2">
-            Select Your Partner
-          </h1>
-          <div className="flex items-center justify-center md:justify-start gap-3">
-            <div className={`w-3 h-3 rounded-full ${analyzing ? 'bg-secondary animate-ping shadow-[0_0_12px_rgba(255,0,0,0.8)]' : 'bg-primary'}`} />
-            <p className="font-body font-bold text-primary uppercase tracking-widest text-sm italic">
-              {analyzing ? "Analyzing Synergy... DISCOVERING CANDIDATES" : "SQUAD FINDER ACTIVE: SYNCED"}
-            </p>
+      <main className="flex-1 overflow-y-auto px-4 md:px-8 py-8 pb-32">
+        <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="text-center md:text-left">
+            <h1 className="text-4xl md:text-5xl font-headline font-black uppercase text-slate-800 italic tracking-tighter mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              Partner Radar
+            </h1>
+            <div className="flex items-center justify-center md:justify-start gap-3">
+              <span className={`material-symbols-outlined text-blue-600 ${analyzing ? 'animate-spin' : 'animate-pulse'} font-black`}>radar</span>
+              <p className="font-body font-black text-blue-600 uppercase tracking-widest text-[10px] italic">
+                {analyzing ? "Synthesizing Network Bonds..." : cuFilter ? "CU EXCLUSIVE ARENA ACTIVE" : "GLOBAL ARENA: RANKED BY SYNERGY"}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center justify-center gap-4">
+             <button 
+              onClick={() => setCuFilter(!cuFilter)}
+              className={`flex items-center gap-3 px-6 py-3 rounded-2xl border-2 transition-all font-black uppercase text-[10px] tracking-widest ${cuFilter ? 'bg-blue-700 text-white border-blue-700 shadow-[0_4px_0_0_#1e3a8a]' : 'bg-white text-slate-400 border-slate-200 hover:border-blue-600 shadow-[0_4px_0_0_#e2e8f0]'}`}
+             >
+               <span className="material-symbols-outlined text-lg font-black">school</span>
+               CU Filter: {cuFilter ? 'ONLINE' : 'OFFLINE'}
+             </button>
           </div>
         </header>
 
-        <div className="max-w-4xl mx-auto relative">
-          {/* Main Card */}
-          <div className={`relative transition-all duration-700 transform ${requestSent ? "scale-90 opacity-0 -translate-y-20 blur-xl" : "scale-100 opacity-100 translate-y-0"}`}>
-            <div className={`relative bg-white rounded-2xl overflow-hidden shadow-[24px_24px_0_0_rgba(0,25,69,0.1)] border-4 border-on-surface transition-all duration-500 ${analyzing ? "blur-md opacity-50 scale-95" : "scale-100 opacity-100"}`}>
-              <div className="flex flex-col lg:flex-row h-full min-h-[550px]">
-                {/* Character Portrait */}
-                <div className="w-full lg:w-1/2 relative bg-slate-900 overflow-hidden">
-                  <img
-                    alt={currentUser.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-80 mix-blend-luminosity hover:mix-blend-normal hover:opacity-100"
-                    src={currentUser.image}
-                  />
-                  
-                  {/* Sync Percentage Badge */}
-                  <div className="absolute top-6 left-6 animate-in slide-in-from-left-4 duration-700 delay-300">
-                    <div className="bg-white border-4 border-on-surface p-4 rounded-2xl shadow-xl flex flex-col items-center">
-                      <span className="text-[10px] font-black uppercase text-primary leading-none mb-1">
-                        Sync Score
-                      </span>
-                      <span className="text-4xl font-headline font-black text-on-surface italic leading-none">
-                        {currentUser.sync}%
-                      </span>
-                    </div>
+        {/* Discovery Grid */}
+        <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 transition-all duration-500 ${analyzing || showClash ? 'opacity-30 blur-sm scale-95' : 'opacity-100 blur-0 scale-100'}`}>
+          {partners.map((partner) => (
+            <div key={partner.name} onClick={() => setShowDetail(partner)} className="group bg-white rounded-2xl border-2 border-slate-200 p-4 shadow-[6px_6px_0_0_#e2e8f0] hover:translate-x-1 hover:-translate-y-1 hover:shadow-[10px_10px_0_0_#cbd5e1] transition-all relative overflow-hidden flex flex-col justify-between h-full cursor-pointer">
+              <div className="absolute top-0 right-0 p-3 z-30 flex flex-col items-end gap-1">
+                <span className="text-[11px] font-black italic tracking-tighter text-blue-600">{partner.syncScore}% SYNC</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-3 mb-4 pt-2">
+                  <div className="w-10 h-10 rounded-xl bg-slate-100 overflow-hidden border-2 border-slate-200 shadow-sm shrink-0 flex items-center justify-center relative shadow-inner">
+                    <img src={partner.image} alt={partner.name} className="w-full h-full object-cover transition-all grayscale group-hover:grayscale-0 duration-500" />
                   </div>
-
-                  {/* Level Indicator Overlay */}
-                  <div className="absolute bottom-6 left-6 bg-primary text-white px-6 py-2 rounded-full font-headline font-black uppercase text-xs tracking-widest shadow-xl">
-                    Level {currentUser.lvl}
+                  <div className="min-w-0">
+                    <h3 className="font-headline font-black text-xs uppercase leading-none tracking-tighter truncate text-slate-900">{partner.name}</h3>
+                    <div className="flex items-center gap-1 mt-1"><span className="material-symbols-outlined text-blue-600 text-[10px] font-black">star</span><span className="font-black text-[10px] text-slate-700">{partner.stars}</span></div>
                   </div>
                 </div>
-
-                {/* Character Details */}
-                <div className="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col justify-between bg-white relative text-on-surface">
-                  <div>
-                    <div className="flex justify-between items-start mb-8">
-                      <div>
-                        <h2 className="text-4xl lg:text-5xl font-headline font-black uppercase leading-tight tracking-tighter">
-                          {currentUser.name}
-                        </h2>
-                        <p className={`font-headline font-black text-sm italic uppercase tracking-wider text-primary`}>
-                          {currentUser.role}
-                        </p>
-                      </div>
-                      <div className="w-16 h-16 bg-surface-container-high rounded-2xl flex items-center justify-center text-primary transform rotate-12 border-2 border-on-surface shadow-md">
-                        <span className="material-symbols-outlined text-3xl font-black">
-                          {currentUser.icon}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="bg-slate-50 p-6 rounded-2xl mb-10 border-4 border-on-surface shadow-[6px_6px_0_0_rgba(0,0,0,1)] relative">
-                      <span className="material-symbols-outlined absolute -top-4 -left-2 text-primary font-black scale-150 rotate-12">
-                        format_quote
-                      </span>
-                      <p className="font-bold leading-relaxed italic text-lg">
-                        "{currentUser.quote}"
-                      </p>
-                    </div>
-
-                    <div className="space-y-6">
-                      <h3 className="font-headline font-black text-[10px] uppercase tracking-[0.3em] text-slate-400">
-                        Class Expertise
-                      </h3>
-                      <div className="flex flex-wrap gap-3">
-                        {currentUser.skills.map((skill, idx) => (
-                          <span 
-                            key={skill}
-                            className={`px-5 py-2 bg-white border-2 border-on-surface rounded-xl font-headline font-black text-[10px] uppercase shadow-[3px_3px_0_0_rgba(0,0,0,1)] hover:bg-slate-50 transition-colors transform ${idx % 2 === 0 ? '-rotate-2' : 'rotate-1'}`}
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card Controls */}
-                  <div className="mt-12 flex gap-4">
-                    <button 
-                      onClick={handleNext}
-                      className="flex-1 py-5 bg-white text-on-surface font-headline font-black rounded-2xl border-4 border-on-surface shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-slate-50 active:translate-y-1 active:shadow-none transition-all uppercase tracking-tighter text-sm flex items-center justify-center gap-2"
-                    >
-                      <span className="material-symbols-outlined font-black">refresh</span>
-                      SKIP
-                    </button>
-                    <button
-                      onClick={handleRequestTeam}
-                      className="flex-[2] py-5 bg-primary text-white font-headline font-black rounded-2xl border-4 border-on-surface shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:brightness-110 active:translate-y-1 active:shadow-none transition-all uppercase tracking-tighter text-sm flex items-center justify-center gap-3 group"
-                    >
-                      <span className="material-symbols-outlined font-black group-hover:rotate-12 transition-all">
-                        double_arrow
-                      </span>
-                      REQUEST SYNC
-                    </button>
-                  </div>
+                <div className="mb-3">
+                   <p className="text-[8px] font-black text-blue-600 uppercase tracking-widest mb-1">{partner.role}</p>
+                   <div className="flex flex-wrap gap-1 mt-2">
+                      <span className="bg-slate-100 text-[6px] font-black uppercase px-1.5 py-0.5 rounded border border-slate-200 text-slate-500">PROJECTS: {partner.stats?.projects || 20}+</span>
+                      <span className="bg-blue-50 text-[6px] font-black uppercase px-1.5 py-0.5 rounded border border-blue-100 text-blue-600">WON: {partner.stats?.won || 5}</span>
+                   </div>
                 </div>
               </div>
+              <button onClick={(e) => { e.stopPropagation(); handleRequestTeam(partner); }} className={`w-full py-2.5 rounded-xl font-headline font-black text-[8px] uppercase tracking-tighter transition-all flex items-center justify-center gap-2 ${cuFilter ? 'bg-orange-600 text-white shadow-[0_4px_0_0_#9a3412]' : 'bg-blue-700 text-white shadow-[0_4px_0_0_#1e40af]'}`}>
+                <span className="material-symbols-outlined text-sm font-black">add_link</span> ESTABLISH LINK
+              </button>
             </div>
-
-            {/* Visual Stack Effect */}
-            <div className="absolute -bottom-4 left-6 right-6 h-12 bg-white border-x-4 border-b-4 border-on-surface -z-10 rounded-2xl opacity-80"></div>
-            <div className="absolute -bottom-8 left-12 right-12 h-12 bg-white border-x-4 border-b-4 border-on-surface -z-20 rounded-2xl opacity-40"></div>
-          </div>
-
-          {/* Request Sent Toast */}
-          {requestSent && (
-            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-primary text-white rounded-2xl p-12 transition-all duration-300 animate-in zoom-in-50 border-4 border-on-surface shadow-[16px_16px_0_0_rgba(0,0,0,1)]">
-              <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mb-8 shadow-2xl relative">
-                <span className="material-symbols-outlined text-7xl text-primary animate-bounce">
-                  person_check
-                </span>
-                <div className="absolute -top-2 -right-2 bg-secondary text-white w-10 h-10 rounded-full flex items-center justify-center font-black animate-pulse border-2 border-white">
-                  !
-                </div>
-              </div>
-              <h2 className="text-5xl font-headline font-black uppercase text-center italic tracking-tighter mb-4 leading-none">
-                SYNC REQUEST<br/>DISPATCHED
-              </h2>
-              <p className="text-lg font-body font-bold text-center uppercase tracking-widest opacity-80 max-w-sm">
-                A link establish request has been sent to {currentUser.name}.
-              </p>
-              <div className="mt-12 flex gap-4">
-                <Link href="/victory" className="bg-white text-primary px-8 py-5 rounded-2xl font-headline font-black uppercase transition-all hover:scale-105 active:scale-95 shadow-[8px_8px_0_0_rgba(0,25,69,1)] flex items-center gap-2">
-                  <span className="material-symbols-outlined">forum</span>
-                  Go to Comms
-                </Link>
-                <button 
-                  onClick={() => setRequestSent(false)}
-                  className="bg-transparent border-4 border-white text-white px-8 py-5 rounded-2xl font-headline font-black uppercase hover:bg-white/10 transition-all shadow-lg"
-                >
-                  Dismiss
-                </button>
-              </div>
-            </div>
-          )}
+          ))}
         </div>
 
-        {/* Global Stats */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-2xl border-4 border-on-surface shadow-[8px_8px_0_0_rgba(0,25,69,1)] transform hover:-translate-y-2 transition-transform group">
-            <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl bg-tertiary-container flex items-center justify-center text-on-tertiary-container border-2 border-on-surface shadow-md group-hover:rotate-6 transition-transform">
-                <span className="material-symbols-outlined text-3xl font-black">trophy</span>
-              </div>
-              <div>
-                <div className="text-[10px] font-headline font-black text-slate-400 uppercase tracking-widest leading-none mb-2">
-                  Season Rank
-                </div>
-                <div className="text-2xl font-headline font-black text-on-surface">
-                  Explorer I
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-white p-8 rounded-2xl border-4 border-on-surface shadow-[8px_8px_0_0_rgba(0,25,69,1)] transform hover:-translate-y-2 transition-transform group">
-            <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl bg-secondary-container flex items-center justify-center text-on-secondary-container border-2 border-on-surface shadow-md group-hover:rotate-6 transition-transform">
-                <span className="material-symbols-outlined text-3xl font-black">stat_3</span>
-              </div>
-              <div>
-                <div className="text-[10px] font-headline font-black text-slate-400 uppercase tracking-widest leading-none mb-2">
-                  Daily Multiplier
-                </div>
-                <div className="text-2xl font-headline font-black text-on-surface">
-                  2.5x XP Active
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* STRATEGIC AUDIT USP MODAL */}
+        {showDetail && (
+           <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-slate-950/60 backdrop-blur-md animate-in fade-in duration-300">
+              <div className="bg-white rounded-4xl w-full max-w-2xl overflow-hidden shadow-[32px_32px_0_0_rgba(255,255,255,0.1)] border-4 border-slate-800 animate-in zoom-in-95">
+                 <div className="relative h-40 bg-slate-900 flex items-end p-8 overflow-hidden">
+                    <button onClick={() => setShowDetail(null)} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all"><span className="material-symbols-outlined font-black">close</span></button>
+                    <div className="absolute top-6 left-6 bg-blue-600 text-white text-[8px] font-black px-3 py-1 rounded-lg animate-pulse">DEVMATCH VERIFIED AUDIT</div>
+                    <div className="relative z-10 flex items-center gap-6"><div className="w-20 h-20 rounded-2xl bg-white border-4 border-blue-600 shadow-2xl overflow-hidden"><img src={showDetail.image} className="w-full h-full object-cover shadow-inner" /></div><div><h2 className="text-3xl font-headline font-black text-white uppercase italic leading-none tracking-tighter">{showDetail.name}</h2><p className="text-blue-400 font-black text-xs uppercase tracking-widest mt-2">{showDetail.role}</p></div></div>
+                 </div>
+                 <div className="p-8">
+                    {/* The History Module - OUR USP */}
+                    <div className="bg-slate-50 border-2 border-slate-200 rounded-2xl p-6 mb-8 flex items-center justify-between shadow-inner">
+                       <div className="text-center">
+                          <p className="text-3xl font-headline font-black text-slate-900 leading-none">{showDetail.syncScore}%</p>
+                          <p className="text-[7px] font-black text-blue-600 uppercase tracking-widest mt-1 italic">Synergy Insight</p>
+                       </div>
+                       <div className="w-px h-10 bg-slate-200"></div>
+                       <div className="text-center">
+                          <p className="text-3xl font-headline font-black text-slate-900 leading-none">{showDetail.stats?.won}</p>
+                          <p className="text-[7px] font-black text-green-600 uppercase tracking-widest mt-1 italic">Hackathons Won</p>
+                       </div>
+                       <div className="w-px h-10 bg-slate-200"></div>
+                       <div className="text-center">
+                          <p className="text-3xl font-headline font-black text-slate-900 leading-none">{showDetail.stats?.attended}</p>
+                          <p className="text-[7px] font-black text-amber-500 uppercase tracking-widest mt-1 italic">Events Attended</p>
+                       </div>
+                       <div className="w-px h-10 bg-slate-200"></div>
+                       <div className="text-center">
+                          <p className="text-3xl font-headline font-black text-slate-900 leading-none">{showDetail.stats?.projects}</p>
+                          <p className="text-[7px] font-black text-purple-600 uppercase tracking-widest mt-1 italic">Live Projects</p>
+                       </div>
+                    </div>
 
-          <div className="bg-white p-8 rounded-2xl border-4 border-on-surface shadow-[8px_8px_0_0_rgba(0,25,69,1)] transform hover:-translate-y-2 transition-transform group">
-            <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl bg-primary-container flex items-center justify-center text-on-primary-container border-2 border-on-surface shadow-md group-hover:rotate-6 transition-transform">
-                <span className="material-symbols-outlined text-3xl font-black">wifi_tethering</span>
+                    <div className="grid grid-cols-2 gap-8 mb-8">
+                       <div className="space-y-4">
+                          <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Synergy Rationale (Why him?)</h4>
+                          <div className="space-y-2">
+                             <div className="flex gap-2 text-[10px] font-bold text-slate-700 italic">
+                                <span className="material-symbols-outlined text-blue-600 text-xs font-black">verified</span>
+                                Zero Role Overlap with PIXEL_SLAYER.
+                             </div>
+                             <div className="flex gap-2 text-[10px] font-bold text-slate-700 italic">
+                                <span className="material-symbols-outlined text-blue-600 text-xs font-black">verified</span>
+                                Consistent GitHub Deployment Record.
+                             </div>
+                             <div className="flex gap-2 text-[10px] font-bold text-slate-700 italic">
+                                <span className="material-symbols-outlined text-blue-600 text-xs font-black">verified</span>
+                                Victory consistency in University events.
+                             </div>
+                          </div>
+                       </div>
+                       <div>
+                          <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Peer Battle Reviews</h4>
+                          <div className="space-y-2">
+                             {showDetail.reviews?.map((review: string, i: number) => (
+                                <div key={i} className="bg-slate-50 border-l-2 border-blue-500 p-2 text-[9px] font-bold text-slate-600 italic leading-tight">
+                                   "{review}"
+                                </div>
+                             ))}
+                          </div>
+                       </div>
+                    </div>
+
+                    <button onClick={() => handleRequestTeam(showDetail)} className="w-full py-4 bg-blue-700 text-white rounded-2xl font-headline font-black uppercase text-xs shadow-[0_4px_0_0_#1e3a8a] active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2 italic">START MISSION WITH {showDetail.name.split(' ')[0]}</button>
+                 </div>
               </div>
-              <div>
-                <div className="text-[10px] font-headline font-black text-slate-400 uppercase tracking-widest leading-none mb-2">
-                  Matching Status
-                </div>
-                <div className="text-2xl font-headline font-black text-on-surface group-hover:text-primary transition-colors uppercase">
-                  Live Sync
-                </div>
+           </div>
+        )}
+
+        {/* 3D SQUAD CLASH */}
+        {showClash && selectedPartner && (
+           <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-50/95 backdrop-blur-xl overflow-hidden animate-in fade-in duration-700 font-headline italic uppercase tracking-tighter">
+              <div className="absolute inset-0 z-0">
+                 <div className={`absolute inset-0 bg-gradient-to-r from-blue-600/5 via-transparent to-orange-600/5 ${clashStage === 2 ? 'opacity-100 scale-150' : 'opacity-30'} transition-all duration-[2000ms]`}></div>
+                 <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:60px_60px]"></div>
               </div>
-            </div>
-          </div>
-        </div>
+              <div className="relative z-10 w-full max-w-5xl px-6 flex flex-col items-center">
+                 <div className={`mb-12 text-center transition-all duration-700 ${clashStage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-12'}`}>
+                    <span className="bg-blue-600 text-white text-[10px] font-black uppercase px-6 py-2 rounded-full shadow-[0_4px_0_0_#1e3a8a] animate-pulse italic">SYNC_ESTABLISHED</span>
+                    <h2 className="text-6xl md:text-9xl font-headline font-black text-slate-900 mt-6 leading-none tracking-tighter drop-shadow-2xl">TEAM FORMED!</h2>
+                 </div>
+                 <div className="w-full flex items-center justify-center gap-4 md:gap-16 relative h-[400px]">
+                    <div className={`transition-all duration-[1000ms] ease-out-back ${clashStage >= 1 ? 'translate-x-0 opacity-100 scale-100' : '-translate-x-[200%] opacity-0 scale-50'}`}>
+                       <div className="bg-white border-2 border-slate-200 rounded-4xl p-10 shadow-[20px_20px_0_0_#eff6ff] perspective-1000 rotate-y-12 relative">
+                          <div className="absolute -top-4 -left-4 bg-blue-600 text-white text-[8px] font-black px-3 py-1 rounded-lg">OPERATIVE {USER_PROFILE.name}</div>
+                          <div className="w-48 h-48 rounded-3xl bg-slate-100 border-2 border-slate-200 overflow-hidden mb-8 relative shadow-inner"><img src={USER_PROFILE.image} className="w-full h-full object-cover" alt="User" /></div>
+                          <div className="text-center"><h4 className="text-3xl font-black text-slate-800">{USER_PROFILE.name}</h4><p className="text-[10px] font-black text-blue-600 tracking-widest mt-2">{USER_PROFILE.role}</p></div>
+                       </div>
+                    </div>
+                    <div className={`relative z-20 flex items-center justify-center w-32 md:w-48 transition-all duration-500 ${clashStage === 2 ? 'scale-150 rotate-[360deg]' : 'scale-100'}`}>
+                       <div className={`w-20 h-20 md:w-28 md:h-28 rounded-full bg-blue-700 text-white flex items-center justify-center shadow-[0_12px_24px_rgba(37,99,235,0.4)] border-4 border-white ${clashStage === 2 ? 'animate-ping' : ''}`}><span className="material-symbols-outlined text-4xl md:text-6xl font-black italic">sync_alt</span></div>
+                    </div>
+                    <div className={`transition-all duration-[1000ms] ease-out-back ${clashStage >= 1 ? 'translate-x-0 opacity-100 scale-100' : '-translate-x-[200%] opacity-0 scale-50'}`}>
+                       <div className="bg-white border-2 border-slate-200 rounded-4xl p-10 shadow-[20px_20px_0_0_#fff7ed] perspective-1000 -rotate-y-12 relative">
+                          <div className="absolute -top-4 -right-4 bg-orange-600 text-white text-[8px] font-black px-3 py-1 rounded-lg">OPERATIVE {selectedPartner.name.split(' ')[0].toUpperCase()}</div>
+                          <div className="w-48 h-48 rounded-3xl bg-slate-100 border-2 border-slate-200 overflow-hidden mb-8 relative shadow-inner"><img src={selectedPartner.image} className="w-full h-full object-cover" alt="Partner" /></div>
+                          <div className="text-center"><h4 className="text-3xl font-black text-slate-800">{selectedPartner.name}</h4><p className="text-[10px] font-black text-orange-600 tracking-widest mt-2">{selectedPartner.role}</p></div>
+                       </div>
+                    </div>
+                 </div>
+                 <div className={`mt-16 transition-all duration-700 delay-500 flex flex-col items-center gap-6 ${clashStage >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+                    <div className="flex items-center gap-4 px-8 py-3 bg-white border-2 border-blue-600/20 rounded-2xl shadow-[0_8px_16px_rgba(37,99,235,0.1)] animate-in slide-in-from-bottom-4">
+                       <span className="text-[12px] font-black text-blue-700 uppercase tracking-[0.2em] italic leading-none">OPERATIVE PIXEL_SLAYER JOINED THE ROOM</span>
+                    </div>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.6em] text-center italic">Finalizing Infiltration Protocol...</p>
+                 </div>
+              </div>
+           </div>
+        )}
       </main>
       <MobileNav />
+      <style jsx global>{`
+         @keyframes progress-fast { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+         .animate-progress-fast { animation: progress-fast 2s infinite linear; }
+         .perspective-1000 { perspective: 1000px; }
+         .rotate-y-12 { transform: rotateY(12deg); }
+         .-rotate-y-12 { transform: rotateY(-12deg); }
+      `}</style>
     </div>
   );
 }

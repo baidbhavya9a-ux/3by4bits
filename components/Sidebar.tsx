@@ -15,23 +15,23 @@ export default function Sidebar() {
 
   return (
     <aside className="h-screen w-64 border-r-8 border-slate-200 bg-slate-100 hidden md:flex flex-col py-8 space-y-4 px-4 sticky top-20">
-      <div className="mb-8 px-4">
-        <div className="flex items-center gap-3">
+      <Link href="/profile" className="mb-8 px-4 block group cursor-pointer">
+        <div className="flex items-center gap-3 transition-transform group-hover:scale-105 group-hover:translate-x-1">
           <img
             alt="Player Profile"
-            className="w-12 h-12 rounded-xl bg-primary shadow-lg"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwUsC7kdWgTLlBCLZLz43DWwwXm-iblHD5YFfMwiQWArwhBhiLhb3JojrkyhAsGeZO9Ml1xUPyS_IiFmLE_fwV3OPwuaiooD9bv-BkQ-9TOLIzL6f2V2ENQ13QHrwvgkwn565f7c0pbBhFKF6CT5EraAW6u_SF3oxV1SCxURu0qosEoDNCIMrLJ6XXetEEALtBi9OYtrA8hlB0SsmLyMFleOqUrbBh5XK9ZuO6XMqPo9ex9iI59xAOkPYBZEdakDffa43LhT8j1Qs"
+            className="w-12 h-12 rounded-xl bg-blue-600 shadow-lg border-2 border-white"
+            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Shiva"
           />
           <div>
-            <p className="font-headline font-black text-xl text-blue-700 leading-none">
-              Level 24
+            <p className="font-headline font-black text-xl text-blue-700 leading-none group-hover:text-blue-600">
+              Level 54
             </p>
             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-1">
-              Elite Coder
+              Code Conqueror
             </p>
           </div>
         </div>
-      </div>
+      </Link>
       <nav className="space-y-3">
         {navItems.map((item) => {
           const isActive = pathname === item.href;

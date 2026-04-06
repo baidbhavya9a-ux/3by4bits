@@ -190,7 +190,7 @@ export default function Navbar() {
                   </div>
                   <div className="p-2">
                     <Link 
-                      href="/setup" 
+                      href="/profile" 
                       onClick={() => setMenuOpen(false)}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 text-slate-700 hover:text-blue-700 transition-colors group"
                     >
