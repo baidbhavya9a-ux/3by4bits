@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Be_Vietnam_Pro } from "next/font/google";
+import { Plus_Jakarta_Sans, Be_Vietnam_Pro, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
+  weight: ["400", "500", "700", "800"],
   subsets: ["latin"],
   variable: "--font-plus-jakarta",
+});
+
+const montserrat = Montserrat({
+  weight: ["800"],
+  subsets: ["latin"],
+  variable: "--font-montserrat",
 });
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -27,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${plusJakartaSans.variable} ${beVietnamPro.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} ${beVietnamPro.variable} ${montserrat.variable} h-full antialiased`}
     >
       <head>
         <link

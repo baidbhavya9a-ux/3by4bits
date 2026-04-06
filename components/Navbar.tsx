@@ -27,8 +27,15 @@ export default function Navbar() {
           </button>
         )}
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl font-black text-blue-700 italic font-headline tracking-tighter uppercase">
-            DevMatch Collab
+          <span 
+            className="text-3xl text-blue-700 tracking-tighter uppercase flex items-center"
+            style={{ 
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 800 
+            }}
+          >
+            <span>DEVMATCH</span>
+            <span className="italic ml-2">COLLAB</span>
           </span>
         </Link>
       </div>

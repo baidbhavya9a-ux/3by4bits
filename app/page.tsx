@@ -10,10 +10,10 @@ export default function Home() {
           <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div className="z-10 text-center md:text-left">
               <div className="inline-block px-4 py-1 bg-tertiary-container text-tertiary-fixed-variant font-headline font-black uppercase text-xs rounded-full mb-6 -rotate-2">
-                Season 01: The Great Compile
+                Season 01: The Collab Ascension
               </div>
               <h1 className="text-5xl md:text-7xl font-headline font-black uppercase tracking-tighter leading-[0.9] mb-8">
-                Assemble Your <span className="text-primary italic">Dream Team.</span>
+                Assemble Your <span className="text-primary" style={{ fontFamily: "var(--font-montserrat)" }}>Dream Team.</span>
               </h1>
               <p className="text-lg md:text-xl text-on-surface-variant max-w-lg mb-10 font-medium">
                 Ditch the solo queue. Join the elite arena where developers
