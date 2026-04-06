@@ -18,6 +18,7 @@ const isFirebaseConfigured =
 
 let auth: any;
 let googleProvider: any;
+let githubProvider: any;
 
 if (isFirebaseConfigured) {
   const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
