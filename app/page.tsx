@@ -10,19 +10,11 @@ export default function Home() {
         <section className="relative px-6 py-12 md:py-24 checker-bg">
           <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div className="z-10 text-center md:text-left">
-<<<<<<< HEAD
-              <div className="inline-block px-4 py-1 bg-tertiary-container text-tertiary-fixed-variant font-headline font-black uppercase text-xs rounded-full mb-6 -rotate-2">
-                Season 01: The Collab Ascension
-              </div>
-              <h1 className="text-5xl md:text-7xl font-headline font-black uppercase tracking-tighter leading-[0.9] mb-8">
-                Assemble Your <span className="text-primary" style={{ fontFamily: "var(--font-montserrat)" }}>Dream Team.</span>
-=======
               <div className="inline-block px-4 py-1 bg-primary/20 text-primary border border-primary/30 font-headline font-black uppercase text-xs rounded-full mb-6 -rotate-2 backdrop-blur-md">
                 Protocol 01: The Great Compile
               </div>
               <h1 className="text-5xl md:text-8xl font-headline font-black uppercase tracking-tighter leading-[0.85] mb-8">
                 ASSEMBLE YOUR <br/> <span className="text-primary italic">DREAM TEAM.</span>
->>>>>>> 7ea482f2aef1956b0d644539f0380658e3769241
               </h1>
               <p className="text-lg md:text-xl text-on-surface-variant max-w-lg mb-10 font-medium border-l-2 border-primary/40 pl-6">
                 Termination of solo queue imminent. Access the elite arena where developers
