@@ -7,8 +7,8 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { name: "Lobby", href: "/", icon: "sports_esports" },
-    { name: "Events", href: "/missions", icon: "event_note" },
+    { name: "Home", href: "/", icon: "sports_esports" },
+    { name: "Events", href: "/missions", icon: "event_note", count: 18 },
     { name: "Team", href: "/discovery", icon: "groups" },
     { name: "Messages", href: "/victory", icon: "forum" },
   ];
