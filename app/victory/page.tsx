@@ -189,37 +189,55 @@ export default function VictoryPage() {
             <div className="flex-1 relative">
               {/* Overview Tab */}
               {activeView === "overview" && (
-                <div className="p-8 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="p-8 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 min-h-[500px] flex flex-col justify-center">
                   <div className="text-center space-y-4">
-                    <div className="inline-flex items-center gap-3 bg-blue-700 text-white px-6 py-2 rounded-full font-black uppercase tracking-widest text-[10px] shadow-lg mb-4">
-                      <span className="material-symbols-outlined text-sm">cycle</span>
-                      SYNC ACHIEVED
-                    </div>
+                    {isMatching ? (
+                      <div className="inline-flex items-center gap-3 bg-slate-800 text-white px-6 py-2 rounded-full font-black uppercase tracking-widest text-[10px] shadow-lg mb-4 animate-pulse">
+                        <span className="material-symbols-outlined text-sm animate-spin">radar</span>
+                        Scanning for Peers...
+                      </div>
+                    ) : (
+                      <button 
+                        onClick={triggerNewMatch}
+                        className="inline-flex items-center gap-3 bg-blue-700 text-white px-6 py-2 rounded-full font-black uppercase tracking-widest text-[10px] shadow-lg mb-4 hover:bg-blue-800 hover:-translate-y-1 transition-all active:translate-y-0"
+                      >
+                        <span className="material-symbols-outlined text-sm">cycle</span>
+                        {boostActive ? "SYNC BOOSTED!" : "NEW MATCH AVAILABLE"}
+                      </button>
+                    )}
+                    
                     <h1 
-                      className="text-5xl md:text-7xl font-black text-slate-800 uppercase tracking-tighter leading-none"
+                      className={`text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none transition-all duration-500 ${isMatching ? "text-slate-300 blur-sm" : "text-slate-800"}`}
                       style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 800 }}
                     >
-                      TEAM FORMED!
+                      {isMatching ? "MATCHING..." : "TEAM FORMED!"}
                     </h1>
-                    <p className="text-lg font-medium text-slate-500 max-w-xl mx-auto">
-                      The algorithm has computed a perfect match. Your combined skill
-                      score is <span className="text-blue-700 font-bold">98.4%</span>.
+                    <p className={`text-lg font-medium max-w-xl mx-auto transition-all duration-500 ${isMatching ? "text-slate-300" : "text-slate-500"}`}>
+                      {isMatching ? "Our algorithm is analyzing skill signatures..." : (
+                        <>The algorithm has computed a perfect match. Your combined skill score is <span className="text-blue-700 font-bold">98.4%</span>.</>
+                      )}
                     </p>
                   </div>
 
-                  <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                    <div className="bg-slate-50 p-6 rounded-3xl border-2 border-slate-100 w-64 text-center">
-                      <div className="w-32 h-32 mx-auto mb-4 bg-blue-100 rounded-full border-4 border-white shadow-md overflow-hidden">
+                  <div className={`flex flex-col md:flex-row items-center justify-center gap-6 transition-all duration-700 ${isMatching ? "opacity-30 scale-95 grayscale" : "opacity-100 scale-100 grayscale-0"}`}>
+                    <div className="bg-slate-50 p-6 rounded-3xl border-2 border-slate-100 w-64 text-center group">
+                      <div className="w-32 h-32 mx-auto mb-4 bg-blue-100 rounded-full border-4 border-white shadow-md overflow-hidden group-hover:scale-105 transition-transform duration-300">
                         <img alt="Player 1" src="/skin-druid.png" className="w-full h-full object-cover" />
                       </div>
                       <h3 className="font-black uppercase text-slate-800">Pixel_Slayer</h3>
                       <p className="text-[10px] font-bold text-slate-500 uppercase">UI Druid</p>
                     </div>
-                    <div className="bg-blue-700 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg">
-                      <span className="material-symbols-outlined">bolt</span>
-                    </div>
-                    <div className="bg-slate-50 p-6 rounded-3xl border-2 border-slate-100 w-64 text-center">
-                      <div className="w-32 h-32 mx-auto mb-4 bg-orange-100 rounded-full border-4 border-white shadow-md overflow-hidden">
+
+                    <button 
+                      onClick={triggerBoost}
+                      disabled={isMatching}
+                      className={`w-16 h-16 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 ${boostActive ? "bg-orange-500 animate-bounce shadow-orange-200" : "bg-blue-700 hover:bg-blue-800 shadow-blue-200"}`}
+                    >
+                      <span className={`material-symbols-outlined text-white text-3xl ${boostActive ? "animate-pulse" : ""}`}>bolt</span>
+                    </button>
+
+                    <div className="bg-slate-50 p-6 rounded-3xl border-2 border-slate-100 w-64 text-center group">
+                      <div className="w-32 h-32 mx-auto mb-4 bg-orange-100 rounded-full border-4 border-white shadow-md overflow-hidden group-hover:scale-105 transition-transform duration-300">
                         <img alt="Player 2" src="/skin-ninja.png" className="w-full h-full object-cover" />
                       </div>
                       <h3 className="font-black uppercase text-slate-800">Node_Ninja</h3>
@@ -227,8 +245,11 @@ export default function VictoryPage() {
                     </div>
                   </div>
 
-                  <div className="flex justify-center gap-4">
-                    <button className="bg-slate-800 text-white px-8 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-slate-700 transition-all shadow-md flex items-center gap-2">
+                  <div className={`flex justify-center gap-4 transition-all duration-500 ${isMatching ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"}`}>
+                    <button 
+                      onClick={triggerNewMatch}
+                      className="bg-slate-800 text-white px-8 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-slate-700 transition-all shadow-md flex items-center gap-2"
+                    >
                       <span className="material-symbols-outlined text-sm">radar</span>
                       Search for New Team
                     </button>
