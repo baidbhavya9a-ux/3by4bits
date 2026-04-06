@@ -94,6 +94,20 @@ export default function SetupPage() {
               }}
             >
               <div className="space-y-6">
+                {/* Google Identity Info */}
+                {user && (
+                  <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 flex items-center gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-sm">
+                      <img src={user.photoURL || ""} alt="Google Profile" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black uppercase text-blue-400 leading-none">Connected as</p>
+                      <p className="text-sm font-bold text-blue-700">{user.displayName}</p>
+                      <p className="text-[10px] font-medium text-slate-400">{user.email}</p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Callsign / Username Field */}
                 <div className="space-y-2">
                   <label className="block font-black uppercase text-[10px] text-blue-700 tracking-widest ml-1">
