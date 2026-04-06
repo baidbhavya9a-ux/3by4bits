@@ -5,14 +5,17 @@ import {
   onAuthStateChanged, 
   signInWithPopup, 
   signOut, 
+  updateProfile,
   User 
 } from "firebase/auth";
-import { auth, googleProvider, isFirebaseConfigured } from "@/lib/firebase";
+import { auth, googleProvider, githubProvider, isFirebaseConfigured } from "@/lib/firebase";
 
 interface AuthContextType {
   user: any | null; // Use any to allow for our mock user object
   loading: boolean;
   loginWithGoogle: () => Promise<void>;
+  loginWithGithub: () => Promise<void>;
+  updateUserProfile: (displayName: string, photoURL: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -47,6 +50,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const loginWithGithub = async () => {
+    if (isFirebaseConfigured && auth) {
+      try {
+        await signInWithPopup(auth, githubProvider);
+      } catch (error) {
+        console.error("GitHub Auth Error:", error);
+        alert(`GitHub Auth Error: ${error instanceof Error ? error.message : "Unknown Error"}`);
+      }
+    } else {
+      alert("Firebase Configuration Missing! Please add your API keys to enable GitHub Sign-In.");
+    }
+  };
+
+  const updateUserProfile = async (displayName: string, photoURL: string) => {
+    if (isFirebaseConfigured && auth && auth.currentUser) {
+      try {
+        await updateProfile(auth.currentUser, { displayName, photoURL });
+        // Force refresh local user state
+        setUser({ ...auth.currentUser, displayName, photoURL });
+      } catch (error) {
+        console.error("Update Profile Error:", error);
+        throw error;
+      }
+    }
+  };
+
   const logout = async () => {
     if (isFirebaseConfigured && auth) {
       try {
@@ -60,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithGithub, updateUserProfile, logout }}>
       {children}
     </AuthContext.Provider>
   );
