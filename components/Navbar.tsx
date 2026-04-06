@@ -170,7 +170,7 @@ export default function Navbar() {
               <img
                 alt="User Rank Avatar"
                 className="absolute inset-0 w-full h-full object-cover z-10"
-                src="/prof-avatar.png"
+                src="/skin-ninja.png"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.opacity = '0';
                 }}
@@ -201,6 +201,7 @@ export default function Navbar() {
                   <span className="text-xs font-black uppercase tracking-tight">Settings</span>
                 </Link>
                 <button 
+                  onClick={() => router.push("/")}
                   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 text-slate-700 hover:text-red-600 transition-colors group"
                 >
                   <span className="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">logout</span>
