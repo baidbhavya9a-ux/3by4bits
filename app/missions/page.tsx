@@ -1,62 +1,12 @@
+import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
+
 export default function MissionsPage() {
   return (
     <>
 
       <div className="flex pt-20 h-screen overflow-hidden">
-        <aside className="h-screen w-64 border-r-8 border-slate-200 bg-slate-100 hidden md:flex flex-col py-8 space-y-4 px-4">
-          <div className="mb-8 px-4">
-            <div className="flex items-center gap-3">
-              <img
-                alt="Player Profile"
-                className="w-12 h-12 rounded-xl bg-primary shadow-lg"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwUsC7kdWgTLlBCLZLz43DWwwXm-iblHD5YFfMwiQWArwhBhiLhb3JojrkyhAsGeZO9Ml1xUPyS_IiFmLE_fwV3OPwuaiooD9bv-BkQ-9TOLIzL6f2V2ENQ13QHrwvgkwn565f7c0pbBhFKF6CT5EraAW6u_SF3oxV1SCxURu0qosEoDNCIMrLJ6XXetEEALtBi9OYtrA8hlB0SsmLyMFleOqUrbBh5XK9ZuO6XMqPo9ex9iI59xAOkPYBZEdakDffa43LhT8j1Qs"
-              />
-              <div>
-                <p className="font-headline font-black text-xl text-blue-700">
-                  Level 24
-                </p>
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-500">
-                  Elite Coder
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="space-y-3">
-            <a
-              className="flex items-center gap-3 p-4 text-slate-700 hover:bg-slate-200 rounded-xl font-headline font-bold uppercase text-sm hover:scale-105 transition-transform"
-              href="#"
-            >
-              <span className="material-symbols-outlined">sports_esports</span>
-              Lobby
-            </a>
-            <a
-              className="flex items-center gap-3 p-4 bg-blue-600 text-white rounded-xl shadow-[0_4px_0_0_rgba(0,25,69,1)] font-headline font-bold uppercase text-sm hover:scale-105 transition-transform"
-              href="#"
-            >
-              <span className="material-symbols-outlined">event_note</span>
-              Events
-            </a>
-            <a
-              className="flex items-center gap-3 p-4 text-slate-700 hover:bg-slate-200 rounded-xl font-headline font-bold uppercase text-sm hover:scale-105 transition-transform"
-              href="#"
-            >
-              <span className="material-symbols-outlined">groups</span>
-              Team
-            </a>
-            <a
-              className="flex items-center gap-3 p-4 text-slate-700 hover:bg-slate-200 rounded-xl font-headline font-bold uppercase text-sm hover:scale-105 transition-transform"
-              href="#"
-            >
-              <span className="material-symbols-outlined">forum</span>
-              Messages
-            </a>
-          </div>
-          <div className="mt-auto pt-6">
-            <button className="w-full py-4 bg-secondary text-white rounded-xl font-headline font-black uppercase text-sm chunky-shadow-secondary active-press hover:scale-105 transition-transform">
-              NEW MISSION
-            </button>
-          </div>
-        </aside>
+        <Sidebar />
 
         <main className="flex-1 overflow-y-auto px-6 py-8 pb-32">
           <section className="mb-10">
@@ -313,20 +263,7 @@ export default function MissionsPage() {
         </main>
       </div>
 
-      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 h-20 bg-orange-500 rounded-t-3xl z-[60] border-t-4 border-orange-700 shadow-[0_-8px_20px_rgba(254,118,0,0.3)]">
-        <div className="flex flex-col items-center text-orange-100 font-headline font-black uppercase text-[10px] hover:brightness-110 active:translate-y-1 transition-all">
-          <span className="material-symbols-outlined">assignment</span>
-          <span>Mission Log</span>
-        </div>
-        <div className="flex flex-col items-center bg-white/20 rounded-full px-6 py-2 scale-110 text-white font-headline font-black uppercase text-[10px] hover:brightness-110 active:translate-y-1 transition-all">
-          <span className="material-symbols-outlined">speed</span>
-          <span>Active Boost</span>
-        </div>
-        <div className="flex flex-col items-center text-orange-100 font-headline font-black uppercase text-[10px] hover:brightness-110 active:translate-y-1 transition-all">
-          <span className="material-symbols-outlined">workspace_premium</span>
-          <span>Rewards</span>
-        </div>
-      </nav>
+      <MobileNav />
     </>
   );
 }

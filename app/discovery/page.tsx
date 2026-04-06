@@ -1,106 +1,42 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
+
 export default function DiscoveryPage() {
+  const [requestSent, setRequestSent] = useState(false);
+
+  const handleRequestTeam = () => {
+    setRequestSent(true);
+    // Auto-dismiss or simulate navigation after 2 seconds
+    setTimeout(() => {
+      setRequestSent(false);
+    }, 2000);
+  };
+
   return (
-    <>
+    <div className="flex pt-20 h-screen overflow-hidden">
+      <Sidebar />
+      <main className="flex-1 overflow-y-auto px-4 md:px-12 py-8 pb-32">
+        <header className="mb-10 text-center md:text-left">
+          <h1 className="text-4xl md:text-5xl font-headline font-black uppercase text-on-surface italic tracking-tighter mb-2">
+            Select Your Partner
+          </h1>
+          <p className="font-body font-bold text-primary flex items-center justify-center md:justify-start gap-3 uppercase tracking-widest">
+            <span className="material-symbols-outlined">radar</span>
+            TALENT SCAN ACQUIRED: INITIALIZING SYNC
+          </p>
+        </header>
 
-      <div className="flex min-h-screen pt-20">
-        {/* Side Navigation (Web) */}
-        <aside className="h-screen w-64 border-r-8 border-slate-200 hidden md:flex flex-col py-8 bg-slate-100 sticky top-20">
-          <div className="px-6 mb-8">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white chunky-shadow-primary">
-                <span className="material-symbols-outlined">sports_esports</span>
-              </div>
-              <div>
-                <div className="font-headline font-black text-sm uppercase text-primary">
-                  Level 24
-                </div>
-                <div className="text-xs uppercase font-bold text-slate-500">
-                  Elite Coder
-                </div>
-              </div>
-            </div>
-          </div>
-          <nav className="space-y-4 px-4">
-            <a
-              className="flex items-center gap-3 p-4 text-slate-700 hover:bg-slate-200 rounded-xl transition-transform hover:scale-105"
-              href="#"
-            >
-              <span className="material-symbols-outlined">sports_esports</span>
-              <span className="font-headline font-bold uppercase text-sm">
-                Lobby
-              </span>
-            </a>
-            <a
-              className="flex items-center gap-3 p-4 bg-blue-600 text-white rounded-xl shadow-[0_4px_0_0_rgba(0,25,69,1)] transition-transform hover:scale-105"
-              href="#"
-            >
-              <span className="material-symbols-outlined">groups</span>
-              <span className="font-headline font-bold uppercase text-sm">
-                Team Finder
-              </span>
-            </a>
-            <a
-              className="flex items-center gap-3 p-4 text-slate-700 hover:bg-slate-200 rounded-xl transition-transform hover:scale-105"
-              href="#"
-            >
-              <span className="material-symbols-outlined">event_note</span>
-              <span className="font-headline font-bold uppercase text-sm">
-                Events
-              </span>
-            </a>
-            <a
-              className="flex items-center gap-3 p-4 text-slate-700 hover:bg-slate-200 rounded-xl transition-transform hover:scale-105"
-              href="#"
-            >
-              <span className="material-symbols-outlined">forum</span>
-              <span className="font-headline font-bold uppercase text-sm">
-                Messages
-              </span>
-            </a>
-          </nav>
-          <div className="mt-auto px-4 pb-12">
-            <button className="w-full py-4 bg-secondary text-white font-headline font-black rounded-xl chunky-shadow-secondary active-press uppercase tracking-widest text-sm">
-              NEW MISSION
-            </button>
-          </div>
-        </aside>
-
-        {/* Main Character Select Canvas */}
-        <main className="flex-1 px-4 md:px-12 py-8 pb-32">
-          <header className="mb-10 text-center md:text-left">
-            <h1 className="text-4xl md:text-5xl font-headline font-black uppercase text-on-surface italic tracking-tighter mb-2">
-              Select Your Partner
-            </h1>
-            <p className="font-body font-bold text-primary flex items-center justify-center md:justify-start gap-2">
-              <span className="material-symbols-outlined">radar</span>
-              SCANNING FOR ELITE TALENT...
-            </p>
-          </header>
-
-          <div className="max-w-4xl mx-auto relative">
-            {/* Swipe Indicators */}
-            <div className="absolute -left-16 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-2 opacity-30">
-              <span className="material-symbols-outlined text-4xl">
-                keyboard_double_arrow_left
-              </span>
-              <span className="font-headline font-black text-xs uppercase">
-                SKIP
-              </span>
-            </div>
-            <div className="absolute -right-16 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-2 opacity-30 text-primary">
-              <span className="material-symbols-outlined text-4xl">
-                keyboard_double_arrow_right
-              </span>
-              <span className="font-headline font-black text-xs uppercase">
-                SELECT
-              </span>
-            </div>
-
-            {/* Character Card */}
-            <div className="relative bg-surface-container-low rounded-xl overflow-hidden shadow-2xl border-b-[12px] border-primary tilted-left hover:rotate-0 transition-transform duration-500 group">
+        <div className="max-w-4xl mx-auto relative">
+          {/* Character Card Content */}
+          <div className={`relative transition-all duration-1000 transform ${requestSent ? "scale-90 opacity-0 -translate-y-20 blur-xl" : "scale-100 opacity-100 translate-y-0"}`}>
+            <div className="relative bg-white rounded-xl overflow-hidden shadow-2xl border-b-[12px] border-primary tilted-left hover:rotate-0 transition-transform duration-500 group">
               <div className="flex flex-col lg:flex-row h-full min-h-[500px]">
                 {/* Character Portrait */}
-                <div className="w-full lg:w-1/2 relative bg-surface-container-highest overflow-hidden">
+                <div className="w-full lg:w-1/2 relative bg-surface-variant overflow-hidden">
                   <img
                     alt="Full stack developer candidate"
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
@@ -140,7 +76,7 @@ export default function DiscoveryPage() {
                     </div>
 
                     <div className="glass-panel p-6 rounded-lg mb-8 border-l-4 border-primary">
-                      <p className="text-on-surface-variant font-medium leading-relaxed">
+                      <p className="text-on-surface-variant font-medium leading-relaxed italic">
                         "Optimizing distributed systems like it's a speedrun. I
                         don't just write code; I orchestrate digital
                         symphonies. Looking for a duo to crush the upcoming
@@ -168,18 +104,18 @@ export default function DiscoveryPage() {
 
                   {/* Card Controls */}
                   <div className="mt-12 flex gap-4">
-                    <button className="flex-1 py-5 bg-surface-container-high text-on-surface-variant font-headline font-black rounded-xl border-b-4 border-slate-300 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-tighter">
+                    <button className="flex-1 py-5 bg-surface-container-high text-on-surface-variant font-headline font-black rounded-xl border-b-4 border-slate-300 opacity-40 uppercase tracking-tighter cursor-not-allowed">
                       SKIP
                     </button>
-                    <a
-                      href="/victory"
-                      className="flex-[2] py-5 bg-primary text-white font-headline font-black rounded-xl chunky-shadow-primary active-press uppercase tracking-tighter flex items-center justify-center gap-3 text-lg"
+                    <button
+                      onClick={handleRequestTeam}
+                      className="flex-[2] py-5 bg-primary text-white font-headline font-black rounded-xl chunky-shadow-primary active-press uppercase tracking-tighter flex items-center justify-center gap-3 text-lg group"
                     >
-                      <span className="material-symbols-outlined">
+                      <span className="material-symbols-outlined group-hover:rotate-12 transition-all">
                         person_add
                       </span>
                       REQUEST TEAM
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -190,96 +126,88 @@ export default function DiscoveryPage() {
             <div className="absolute -bottom-8 left-8 right-8 h-12 bg-surface-container-highest -z-20 rounded-xl opacity-20"></div>
           </div>
 
-          {/* Dashboard Mini-Stats */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-tertiary transform hover:-translate-y-2 transition-transform">
-              <div className="flex items-center gap-4">
-                <span
-                  className="material-symbols-outlined text-tertiary text-4xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  workspace_premium
+          {/* Request Sent Toast/Overlay */}
+          {requestSent && (
+            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-primary/95 text-white rounded-2xl p-12 transition-all duration-300 animate-in zoom-in-50">
+              <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mb-8 shadow-2xl">
+                <span className="material-symbols-outlined text-7xl text-primary animate-bounce">
+                  how_to_reg
                 </span>
-                <div>
-                  <div className="text-xs font-headline font-black text-slate-400 uppercase">
-                    Season Rank
-                  </div>
-                  <div className="text-2xl font-headline font-black">
-                    Diamond Tier
-                  </div>
-                </div>
+              </div>
+              <h2 className="text-5xl font-headline font-black uppercase text-center italic tracking-tighter mb-4">
+                COMMAND RECEIVED
+              </h2>
+              <p className="text-xl font-body font-bold text-center uppercase tracking-widest opacity-80">
+                Your request has been dispatched to Alex.
+              </p>
+              <div className="mt-12">
+                <Link href="/victory" className="bg-white text-primary px-8 py-4 rounded-xl font-headline font-black uppercase transition-all hover:scale-105 active:scale-95 inline-block">
+                  View Match Status
+                </Link>
               </div>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-secondary transform hover:-translate-y-2 transition-transform">
-              <div className="flex items-center gap-4">
-                <span
-                  className="material-symbols-outlined text-secondary text-4xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  speed
-                </span>
-                <div>
-                  <div className="text-xs font-headline font-black text-slate-400 uppercase">
-                    Daily Boost
-                  </div>
-                  <div className="text-2xl font-headline font-black">
-                    2.5x XP Active
-                  </div>
+          )}
+        </div>
+
+        {/* Dashboard Mini-Stats */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 opacity-0 animate-in fade-in slide-in-from-bottom-5 duration-700 fill-mode-forwards">
+          <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-tertiary transform hover:-translate-y-2 transition-transform">
+            <div className="flex items-center gap-4">
+              <span
+                className="material-symbols-outlined text-tertiary text-4xl"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                workspace_premium
+              </span>
+              <div>
+                <div className="text-xs font-headline font-black text-slate-400 uppercase">
+                  Season Rank
                 </div>
-              </div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-primary transform hover:-translate-y-2 transition-transform">
-              <div className="flex items-center gap-4">
-                <span
-                  className="material-symbols-outlined text-primary text-4xl"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  group
-                </span>
-                <div>
-                  <div className="text-xs font-headline font-black text-slate-400 uppercase">
-                    Squad Invites
-                  </div>
-                  <div className="text-2xl font-headline font-black">
-                    12 Requests
-                  </div>
+                <div className="text-2xl font-headline font-black">
+                  Explorer I
                 </div>
               </div>
             </div>
           </div>
-        </main>
-      </div>
-
-      {/* Bottom Navigation Bar (Mobile) */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 h-20 bg-orange-500 rounded-t-3xl z-[60] shadow-[0_-8px_20px_rgba(254,118,0,0.3)] border-t-4 border-orange-700">
-        <a
-          className="flex flex-col items-center text-orange-100 hover:brightness-110 active:translate-y-1 transition-all"
-          href="#"
-        >
-          <span className="material-symbols-outlined">assignment</span>
-          <span className="font-headline font-black uppercase text-[10px]">
-            Mission Log
-          </span>
-        </a>
-        <a
-          className="flex flex-col items-center bg-white/20 rounded-full px-6 py-2 scale-110 text-white hover:brightness-110 active:translate-y-1 transition-all"
-          href="#"
-        >
-          <span className="material-symbols-outlined">speed</span>
-          <span className="font-headline font-black uppercase text-[10px]">
-            Active Boost
-          </span>
-        </a>
-        <a
-          className="flex flex-col items-center text-orange-100 hover:brightness-110 active:translate-y-1 transition-all"
-          href="#"
-        >
-          <span className="material-symbols-outlined">workspace_premium</span>
-          <span className="font-headline font-black uppercase text-[10px]">
-            Rewards
-          </span>
-        </a>
-      </nav>
-    </>
+          <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-secondary transform hover:-translate-y-2 transition-transform">
+            <div className="flex items-center gap-4">
+              <span
+                className="material-symbols-outlined text-secondary text-4xl"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                speed
+              </span>
+              <div>
+                <div className="text-xs font-headline font-black text-slate-400 uppercase">
+                  Daily Boost
+                </div>
+                <div className="text-2xl font-headline font-black">
+                  2.5x XP Active
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-primary transform hover:-translate-y-2 transition-transform">
+            <div className="flex items-center gap-4">
+              <span
+                className="material-symbols-outlined text-primary text-4xl"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                group
+              </span>
+              <div>
+                <div className="text-xs font-headline font-black text-slate-400 uppercase">
+                  Squad Finding
+                </div>
+                <div className="text-2xl font-headline font-black">
+                  ONLINE
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <MobileNav />
+    </div>
   );
 }

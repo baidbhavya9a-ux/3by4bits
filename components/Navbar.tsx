@@ -9,6 +9,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
+    { name: "Lobby", href: "/lobby" },
     { name: "Events", href: "/missions" },
     { name: "Team", href: "/discovery" },
     { name: "Messages", href: "/victory" },

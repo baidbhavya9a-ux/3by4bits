@@ -128,4 +128,24 @@
   .slant-bg {
     clip-path: polygon(0 0, 100% 5%, 100% 100%, 0 95%);
   }
+
+  /* Gamified Animations */
+  @keyframes pulse-ring {
+    0% { transform: scale(.95); opacity: 1; }
+    50% { transform: scale(1.05); opacity: .5; }
+    100% { transform: scale(.95); opacity: 1; }
+  }
+
+  .animate-pulse-ring {
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes radar-scan {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .animate-radar-scan {
+    animation: radar-scan 4s linear infinite;
+  }
 }
