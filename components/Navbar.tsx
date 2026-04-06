@@ -16,6 +16,7 @@ export default function Navbar() {
   ];
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeStat, setActiveStat] = useState<"xp" | "medals" | null>(null);
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-slate-50 flex justify-between items-center px-6 py-4 shadow-[0_4px_0_0_#0c53bc]">
@@ -60,20 +61,83 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center gap-6">
-        <div className="hidden sm:flex items-center gap-4 px-4 py-2 bg-slate-900/5 border border-slate-200 rounded-2xl backdrop-blur-sm">
-          <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-blue-600 text-lg font-bold">
-              military_tech
-            </span>
-            <span className="text-xs font-black text-slate-700 tracking-tight">12</span>
+        <div className="relative">
+          <div className="hidden sm:flex items-center gap-1 bg-slate-900/5 border border-slate-200 rounded-2xl backdrop-blur-sm overflow-hidden">
+            <button 
+              onClick={() => setActiveStat(activeStat === "medals" ? null : "medals")}
+              className={`flex items-center gap-1.5 px-3 py-2 transition-all hover:bg-blue-50 active:scale-95 ${activeStat === "medals" ? "bg-blue-50 shadow-inner" : ""}`}
+              title="Rank Details"
+            >
+              <span className="material-symbols-outlined text-blue-600 text-lg font-bold">
+                military_tech
+              </span>
+              <span className="text-xs font-black text-slate-700 tracking-tight">12</span>
+            </button>
+            <div className="w-[1px] h-4 bg-slate-300"></div>
+            <button 
+              onClick={() => setActiveStat(activeStat === "xp" ? null : "xp")}
+              className={`flex items-center gap-1.5 px-3 py-2 transition-all hover:bg-orange-50 active:scale-95 ${activeStat === "xp" ? "bg-orange-50 shadow-inner" : ""}`}
+              title="XP Details"
+            >
+              <span className="material-symbols-outlined text-orange-500 text-lg font-bold">
+                bolt
+              </span>
+              <span className="text-xs font-black text-slate-700 tracking-tight">450 XP</span>
+            </button>
           </div>
-          <div className="w-[1px] h-4 bg-slate-300"></div>
-          <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-orange-500 text-lg font-bold">
-              bolt
-            </span>
-            <span className="text-xs font-black text-slate-700 tracking-tight">450 XP</span>
-          </div>
+
+          {/* Stats Popovers */}
+          {activeStat === "medals" && (
+            <div className="absolute top-12 left-0 w-64 bg-white/95 backdrop-blur-md border-2 border-slate-200 rounded-2xl shadow-[0_12px_40px_-5px_rgba(0,0,0,0.15)] z-[60] p-4 animate-in fade-in zoom-in slide-in-from-top-2 duration-200">
+              <div className="flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
+                <span className="material-symbols-outlined text-blue-600">military_tech</span>
+                <h3 className="font-black text-xs uppercase tracking-widest text-slate-700">Trophy Room</h3>
+              </div>
+              <div className="space-y-3 mb-4">
+                <div className="flex justify-between items-center bg-slate-50 p-2 rounded-xl">
+                  <span className="text-[10px] font-bold text-slate-600 uppercase">Season 01 Elite</span>
+                  <span className="text-[10px] font-black text-blue-600">Active</span>
+                </div>
+                <div className="flex justify-between items-center p-2">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase">First Commit</span>
+                  <span className="material-symbols-outlined text-sm text-green-500">check_circle</span>
+                </div>
+              </div>
+              <div className="bg-blue-600/5 p-3 rounded-xl border border-blue-600/10">
+                <p className="text-[9px] font-black text-blue-700 uppercase mb-1">Growth Tip</p>
+                <p className="text-[11px] font-medium text-slate-600 leading-tight">Win a weekly challenge to unlock the <span className="font-bold text-blue-700">Grandmaster</span> badge!</p>
+              </div>
+            </div>
+          )}
+
+          {activeStat === "xp" && (
+            <div className="absolute top-12 right-0 w-64 bg-white/95 backdrop-blur-md border-2 border-slate-200 rounded-2xl shadow-[0_12px_40px_-5px_rgba(0,0,0,0.15)] z-[60] p-4 animate-in fade-in zoom-in slide-in-from-top-2 duration-200">
+              <div className="flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
+                <span className="material-symbols-outlined text-orange-500">bolt</span>
+                <h3 className="font-black text-xs uppercase tracking-widest text-slate-700">XP History</h3>
+              </div>
+              <div className="space-y-2 mb-4 max-h-32 overflow-y-auto pr-1">
+                <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-700 uppercase leading-none">Setup Complete</p>
+                    <p className="text-[8px] text-slate-400 font-medium">Just now</p>
+                  </div>
+                  <span className="text-[10px] font-black text-green-600">+100</span>
+                </div>
+                <div className="flex justify-between items-center py-1.5 border-b border-slate-50">
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-700 uppercase leading-none">Joined Team</p>
+                    <p className="text-[8px] text-slate-400 font-medium">2 hours ago</p>
+                  </div>
+                  <span className="text-[10px] font-black text-green-600">+50</span>
+                </div>
+              </div>
+              <div className="bg-orange-500/5 p-3 rounded-xl border border-orange-500/10">
+                <p className="text-[9px] font-black text-orange-700 uppercase mb-1">Level Up Fast</p>
+                <p className="text-[11px] font-medium text-slate-600 leading-tight">Review a peer's code on the <span className="font-bold text-orange-700">Collab</span> board for +200 XP!</p>
+              </div>
+            </div>
+          )}
         </div>
         
         <div className="relative">
