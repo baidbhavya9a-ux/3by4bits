@@ -1,19 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
 
 export default function DiscoveryPage() {
-  const [isScanning, setIsScanning] = useState(true);
   const [requestSent, setRequestSent] = useState(false);
-
-  useEffect(() => {
-    // Artificial scanning delay to mimic radar
-    const timer = setTimeout(() => {
-      setIsScanning(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleRequestTeam = () => {
     setRequestSent(true);
@@ -24,48 +17,21 @@ export default function DiscoveryPage() {
   };
 
   return (
-    <main className="min-h-screen px-4 md:px-12 py-8 pt-28 pb-32 bg-surface">
-      <header className="mb-10 text-center md:text-left">
-        <h1 className="text-4xl md:text-5xl font-headline font-black uppercase text-on-surface italic tracking-tighter mb-2">
-          Select Your Partner
-        </h1>
-        <p className="font-body font-bold text-primary flex items-center justify-center md:justify-start gap-3">
-          <span className="material-symbols-outlined group-hover:animate-radar-scan">radar</span>
-          {isScanning ? "SCANNING FOR ELITE TALENT..." : "TALENT ACQUIRED. INITIALIZING SYNC."}
-        </p>
-      </header>
+    <div className="flex pt-20 h-screen overflow-hidden">
+      <Sidebar />
+      <main className="flex-1 overflow-y-auto px-4 md:px-12 py-8 pb-32">
+        <header className="mb-10 text-center md:text-left">
+          <h1 className="text-4xl md:text-5xl font-headline font-black uppercase text-on-surface italic tracking-tighter mb-2">
+            Select Your Partner
+          </h1>
+          <p className="font-body font-bold text-primary flex items-center justify-center md:justify-start gap-3 uppercase tracking-widest">
+            <span className="material-symbols-outlined">radar</span>
+            TALENT SCAN ACQUIRED: INITIALIZING SYNC
+          </p>
+        </header>
 
-      <div className="max-w-4xl mx-auto relative min-h-[500px]">
-        {/* Scanning Overlay Animation */}
-        {isScanning && (
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center space-y-8 bg-surface/80 backdrop-blur-md rounded-2xl border-4 border-dashed border-primary/20">
-            <div className="relative w-64 h-64 flex items-center justify-center">
-              <div className="absolute inset-0 border-4 border-primary/30 rounded-full animate-radar-scan">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-32 bg-gradient-to-b from-primary to-transparent blur-sm transform origin-bottom"></div>
-              </div>
-              <span className="material-symbols-outlined text-8xl text-primary animate-pulse">
-                radar
-              </span>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-headline font-black uppercase italic animate-bounce text-primary">
-                Acquiring Targets...
-              </p>
-              <div className="flex gap-2 justify-center mt-2">
-                {[0, 1, 2].map((i) => (
-                  <div
-                    key={i}
-                    className="w-2 h-2 bg-primary rounded-full animate-pulse"
-                    style={{ animationDelay: `${i * 0.2}s` }}
-                  ></div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Character Card Content */}
-        {!isScanning && (
+        <div className="max-w-4xl mx-auto relative">
+          {/* Character Card Content */}
           <div className={`relative transition-all duration-1000 transform ${requestSent ? "scale-90 opacity-0 -translate-y-20 blur-xl" : "scale-100 opacity-100 translate-y-0"}`}>
             <div className="relative bg-white rounded-xl overflow-hidden shadow-2xl border-b-[12px] border-primary tilted-left hover:rotate-0 transition-transform duration-500 group">
               <div className="flex flex-col lg:flex-row h-full min-h-[500px]">
@@ -159,33 +125,31 @@ export default function DiscoveryPage() {
             <div className="absolute -bottom-4 left-4 right-4 h-12 bg-surface-container-high -z-10 rounded-xl opacity-50 tilted-right"></div>
             <div className="absolute -bottom-8 left-8 right-8 h-12 bg-surface-container-highest -z-20 rounded-xl opacity-20"></div>
           </div>
-        )}
 
-        {/* Request Sent Toast/Overlay */}
-        {requestSent && (
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-primary/95 text-white rounded-2xl p-12 transition-all duration-300 animate-in zoom-in-50">
-            <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mb-8 shadow-2xl">
-              <span className="material-symbols-outlined text-7xl text-primary animate-bounce">
-                how_to_reg
-              </span>
+          {/* Request Sent Toast/Overlay */}
+          {requestSent && (
+            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-primary/95 text-white rounded-2xl p-12 transition-all duration-300 animate-in zoom-in-50">
+              <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mb-8 shadow-2xl">
+                <span className="material-symbols-outlined text-7xl text-primary animate-bounce">
+                  how_to_reg
+                </span>
+              </div>
+              <h2 className="text-5xl font-headline font-black uppercase text-center italic tracking-tighter mb-4">
+                COMMAND RECEIVED
+              </h2>
+              <p className="text-xl font-body font-bold text-center uppercase tracking-widest opacity-80">
+                Your request has been dispatched to Alex.
+              </p>
+              <div className="mt-12">
+                <Link href="/victory" className="bg-white text-primary px-8 py-4 rounded-xl font-headline font-black uppercase transition-all hover:scale-105 active:scale-95 inline-block">
+                  View Match Status
+                </Link>
+              </div>
             </div>
-            <h2 className="text-5xl font-headline font-black uppercase text-center italic tracking-tighter mb-4">
-              COMMAND RECEIVED
-            </h2>
-            <p className="text-xl font-body font-bold text-center uppercase tracking-widest opacity-80">
-              Your request has been dispatched to Alex.
-            </p>
-            <div className="mt-12">
-              <Link href="/victory" className="bg-white text-primary px-8 py-4 rounded-xl font-headline font-black uppercase transition-all hover:scale-105 active:scale-95 inline-block">
-                View Match Status
-              </Link>
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
 
-      {/* Dashboard Mini-Stats */}
-      {!isScanning && (
+        {/* Dashboard Mini-Stats */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 opacity-0 animate-in fade-in slide-in-from-bottom-5 duration-700 fill-mode-forwards">
           <div className="bg-white p-6 rounded-xl shadow-lg border-l-8 border-tertiary transform hover:-translate-y-2 transition-transform">
             <div className="flex items-center gap-4">
@@ -242,7 +206,8 @@ export default function DiscoveryPage() {
             </div>
           </div>
         </div>
-      )}
-    </main>
+      </main>
+      <MobileNav />
+    </div>
   );
 }
