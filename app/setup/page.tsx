@@ -1,8 +1,13 @@
+import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
+
 export default function SetupPage() {
   return (
     <>
 
-      <main className="pt-24 pb-32 min-h-screen px-4 md:px-8 max-w-7xl mx-auto">
+    <div className="flex pt-20 h-screen overflow-hidden">
+      <Sidebar />
+      <main className="flex-1 overflow-y-auto px-4 md:px-8 max-w-7xl mx-auto pb-32">
         {/* Hero Header */}
         <header className="mb-12 text-center md:text-left">
           <h1 className="text-5xl md:text-7xl font-headline font-black uppercase tracking-tighter text-on-surface mb-2 italic">
@@ -238,48 +243,8 @@ export default function SetupPage() {
           </div>
         </div>
       </main>
-
-      {/* SideNavBar (Hidden on small screens) */}
-      <aside className="fixed left-0 top-1/2 -translate-y-1/2 h-fit w-20 hidden md:flex flex-col gap-4 px-2 py-8 bg-slate-100 border-r-8 border-slate-200 rounded-r-3xl z-40">
-        <div className="flex flex-col items-center gap-8">
-          <button className="p-3 bg-blue-600 text-white rounded-xl shadow-[0_4px_0_0_#001945]">
-            <span className="material-symbols-outlined">sports_esports</span>
-          </button>
-          <button className="p-3 text-slate-700 hover:bg-slate-200 rounded-xl transition-all">
-            <span className="material-symbols-outlined">event_note</span>
-          </button>
-          <button className="p-3 text-slate-700 hover:bg-slate-200 rounded-xl transition-all">
-            <span className="material-symbols-outlined">groups</span>
-          </button>
-          <button className="p-3 text-slate-700 hover:bg-slate-200 rounded-xl transition-all">
-            <span className="material-symbols-outlined">forum</span>
-          </button>
-        </div>
-      </aside>
-
-      {/* BottomNavBar (Mobile Only) */}
-      <footer className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 h-20 bg-orange-500 rounded-t-3xl z-[60] border-t-4 border-orange-700 shadow-[0_-8px_20px_rgba(254,118,0,0.3)]">
-        <div className="flex flex-col items-center bg-white/20 rounded-full px-6 py-2 scale-110">
-          <span className="material-symbols-outlined text-white">
-            assignment
-          </span>
-          <span className="text-white font-headline font-black uppercase text-[10px]">
-            Mission Log
-          </span>
-        </div>
-        <div className="flex flex-col items-center text-orange-100">
-          <span className="material-symbols-outlined">speed</span>
-          <span className="font-headline font-black uppercase text-[10px]">
-            Active Boost
-          </span>
-        </div>
-        <div className="flex flex-col items-center text-orange-100">
-          <span className="material-symbols-outlined">workspace_premium</span>
-          <span className="font-headline font-black uppercase text-[10px]">
-            Rewards
-          </span>
-        </div>
-      </footer>
+      <MobileNav />
+    </div>
     </>
   );
 }

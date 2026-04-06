@@ -1,8 +1,13 @@
+import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
+
 export default function VictoryPage() {
   return (
     <>
 
-      <main className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="flex pt-20 h-screen overflow-hidden">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto relative py-12 flex flex-col items-center justify-center overflow-hidden pb-32">
         <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
           <div className="absolute top-20 left-10 text-secondary transform -rotate-12">
             <span className="material-symbols-outlined text-8xl">
@@ -138,33 +143,9 @@ export default function VictoryPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <div className="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 h-20 bg-orange-500 rounded-t-3xl z-[60] border-t-4 border-orange-700 shadow-[0_-8px_20px_rgba(254,118,0,0.3)]">
-        <div className="flex flex-col items-center text-orange-100 hover:brightness-110 active:translate-y-1 transition-all">
-          <span className="material-symbols-outlined">assignment</span>
-          <span className="font-headline font-black uppercase text-[10px]">
-            Mission Log
-          </span>
-        </div>
-        <div className="flex flex-col items-center bg-white/20 rounded-full px-6 py-2 scale-110 hover:brightness-110 active:translate-y-1 transition-all">
-          <span
-            className="material-symbols-outlined text-white"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            speed
-          </span>
-          <span className="font-headline font-black uppercase text-[10px] text-white">
-            Active Boost
-          </span>
-        </div>
-        <div className="flex flex-col items-center text-orange-100 hover:brightness-110 active:translate-y-1 transition-all">
-          <span className="material-symbols-outlined">workspace_premium</span>
-          <span className="font-headline font-black uppercase text-[10px]">
-            Rewards
-          </span>
-        </div>
+        </main>
       </div>
+      <MobileNav />
     </>
   );
 }

@@ -1,69 +1,11 @@
+import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
+
 export default function DiscoveryPage() {
   return (
     <>
-
       <div className="flex min-h-screen pt-20">
-        {/* Side Navigation (Web) */}
-        <aside className="h-screen w-64 border-r-8 border-slate-200 hidden md:flex flex-col py-8 bg-slate-100 sticky top-20">
-          <div className="px-6 mb-8">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white chunky-shadow-primary">
-                <span className="material-symbols-outlined">sports_esports</span>
-              </div>
-              <div>
-                <div className="font-headline font-black text-sm uppercase text-primary">
-                  Level 24
-                </div>
-                <div className="text-xs uppercase font-bold text-slate-500">
-                  Elite Coder
-                </div>
-              </div>
-            </div>
-          </div>
-          <nav className="space-y-4 px-4">
-            <a
-              className="flex items-center gap-3 p-4 text-slate-700 hover:bg-slate-200 rounded-xl transition-transform hover:scale-105"
-              href="#"
-            >
-              <span className="material-symbols-outlined">sports_esports</span>
-              <span className="font-headline font-bold uppercase text-sm">
-                Lobby
-              </span>
-            </a>
-            <a
-              className="flex items-center gap-3 p-4 bg-blue-600 text-white rounded-xl shadow-[0_4px_0_0_rgba(0,25,69,1)] transition-transform hover:scale-105"
-              href="#"
-            >
-              <span className="material-symbols-outlined">groups</span>
-              <span className="font-headline font-bold uppercase text-sm">
-                Team Finder
-              </span>
-            </a>
-            <a
-              className="flex items-center gap-3 p-4 text-slate-700 hover:bg-slate-200 rounded-xl transition-transform hover:scale-105"
-              href="#"
-            >
-              <span className="material-symbols-outlined">event_note</span>
-              <span className="font-headline font-bold uppercase text-sm">
-                Events
-              </span>
-            </a>
-            <a
-              className="flex items-center gap-3 p-4 text-slate-700 hover:bg-slate-200 rounded-xl transition-transform hover:scale-105"
-              href="#"
-            >
-              <span className="material-symbols-outlined">forum</span>
-              <span className="font-headline font-bold uppercase text-sm">
-                Messages
-              </span>
-            </a>
-          </nav>
-          <div className="mt-auto px-4 pb-12">
-            <button className="w-full py-4 bg-secondary text-white font-headline font-black rounded-xl chunky-shadow-secondary active-press uppercase tracking-widest text-sm">
-              NEW MISSION
-            </button>
-          </div>
-        </aside>
+        <Sidebar />
 
         {/* Main Character Select Canvas */}
         <main className="flex-1 px-4 md:px-12 py-8 pb-32">
@@ -250,36 +192,7 @@ export default function DiscoveryPage() {
         </main>
       </div>
 
-      {/* Bottom Navigation Bar (Mobile) */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 h-20 bg-orange-500 rounded-t-3xl z-[60] shadow-[0_-8px_20px_rgba(254,118,0,0.3)] border-t-4 border-orange-700">
-        <a
-          className="flex flex-col items-center text-orange-100 hover:brightness-110 active:translate-y-1 transition-all"
-          href="#"
-        >
-          <span className="material-symbols-outlined">assignment</span>
-          <span className="font-headline font-black uppercase text-[10px]">
-            Mission Log
-          </span>
-        </a>
-        <a
-          className="flex flex-col items-center bg-white/20 rounded-full px-6 py-2 scale-110 text-white hover:brightness-110 active:translate-y-1 transition-all"
-          href="#"
-        >
-          <span className="material-symbols-outlined">speed</span>
-          <span className="font-headline font-black uppercase text-[10px]">
-            Active Boost
-          </span>
-        </a>
-        <a
-          className="flex flex-col items-center text-orange-100 hover:brightness-110 active:translate-y-1 transition-all"
-          href="#"
-        >
-          <span className="material-symbols-outlined">workspace_premium</span>
-          <span className="font-headline font-black uppercase text-[10px]">
-            Rewards
-          </span>
-        </a>
-      </nav>
+      <MobileNav />
     </>
   );
 }
