@@ -7,7 +7,7 @@ import MobileNav from "@/components/MobileNav";
 
 const MOCK_PARTNERS = [
   {
-    name: "Alex Rivera",
+    name: "Arjun Mehta",
     role: "System Architect",
     lvl: 42,
     sync: 98,
@@ -18,7 +18,7 @@ const MOCK_PARTNERS = [
     color: "primary"
   },
   {
-    name: "Sarah Chen",
+    name: "Priya Sharma",
     role: "UI/UX Specialist",
     lvl: 24,
     sync: 85,
@@ -29,7 +29,40 @@ const MOCK_PARTNERS = [
     color: "secondary"
   },
   {
-    name: "Marcus Thorne",
+    name: "Ananya Iyer",
+    role: "AI Alchemist",
+    lvl: 31,
+    sync: 89,
+    quote: "Data is the new oil, and I'm the refinement plant. Let's build models that change how we interact with the web.",
+    skills: ["PyTorch", "NLP", "FastAPI"],
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCLun0w5gb--TPA5ET_Y8weUgjg_pZyo1NAR9URZ_2o59-Du5rkgVCg2Uocs6Uxe44A6JLaZRwXKlQZINIZwlWK7XQtCevExFD5Zt_oO9Zhlvf8vN7qfW_5QKoqLv0O_6Q5XZU-lJboX-uCHZCIxLPY-4ivMlQG5eax0pSW4wKsrWZiG5jQVvRwdha0efXfnFEOdeoJROg5b8gMFRcjTwY62hNVckjVw0p2ESI43wwRgc1hKwCKGSu6KnrEQ5VLtJ8zGdckkYaJrhY",
+    icon: "psychology",
+    color: "tertiary"
+  },
+  {
+    name: "Ishaan Malhotra",
+    role: "Fullstack Wizard",
+    lvl: 65,
+    sync: 96,
+    quote: "Why choose between the front and back when you can master the entire stack? I build unicorns for breakfast.",
+    skills: ["T3 Stack", "Postgres", "Deno"],
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBwUsC7kdWgTLlBCLZLz43DWwwXm-iblHD5YFfMwiQWArwhBhiLhb3JojrkyhAsGeZO9Ml1xUPyS_IiFmLE_fwV3OPwuaiooD9bv-BkQ-9TOLIzL6f2V2ENQ13QHrwvgkwn565f7c0pbBhFKF6CT5EraAW6u_SF3oxV1SCxURu0qosEoDNCIMrLJ6XXetEEALtBi9OYtrA8hlB0SsmLyMFleOqUrbBh5XK9ZuO6XMqPo9ex9iI59xAOkPYBZEdakDffa43LhT8j1Qs",
+    icon: "auto_fix_high",
+    color: "primary"
+  },
+  {
+    name: "Kaveri Das",
+    role: "Cloud Titan",
+    lvl: 44,
+    sync: 91,
+    quote: "Uptime is my religion. I scale infrastructures until they're bulletproof and lightning fast.",
+    skills: ["AWS", "Terraform", "Docker"],
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBPhKRUhZs1dQrde4WNC2c3lTaBauJv7tfXjZgCghtmKhcxJ1mAXgVjcGVNkCDq1Bm9M-l38ycrjU6RWwk4PJhV1NhAVV25fhC8ZnpmfL2XcKmpRkN7TkeJ2rL99hn6HS4RaK5n-0wB5PMLTDMa_4IIyFQvTQvkr1jVQiEUIFYlzhuS7wDVuYqdPDQN8Skhxzg1JIAlyXRVQWV-0WFflN7PRWap0kS_azxcNfVPxJSmc7nUL2J0UJrYokjUIHASzFPIUIkA1s3B6WM",
+    icon: "cloud",
+    color: "secondary"
+  },
+  {
+    name: "Siddharth Gupta",
     role: "Security Engineer",
     lvl: 59,
     sync: 94,
