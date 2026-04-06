@@ -10,10 +10,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 const montserrat = Montserrat({
-<<<<<<< HEAD
-  weight: ["800"],
-=======
->>>>>>> 7ea482f2aef1956b0d644539f0380658e3769241
+  weight: ["400", "500", "700", "800"],
   subsets: ["latin"],
   variable: "--font-montserrat",
 });
